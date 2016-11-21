@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+	<item  android:id="@+id/btnServiceDone"
+        android:title="@string/service_done"/>
+	
+	<item  android:id="@+id/btnServiceHistory"
+        android:title="@string/service_history"/>
+	
+    <item  android:id="@+id/btnUpdateCustomer"
+        android:title="@string/update_customer"/>
+
+	<item  android:id="@+id/btnResetServices"
+        android:title="@string/reset_services"/>
+   
+	<item  android:id="@+id/btnDeleteCustomer"
+        android:title="@string/delete_customer"/>
+    
+</menu>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <TextView
+        android:id="@+id/labelSearchName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/displayName"
+        android:text="@string/label_display_name" />
+
+    <TextView
+        android:id="@+id/displayName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/labelSearchName" />
+
+    <TextView
+        android:id="@+id/labelDisplayAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/displayAddress"
+        android:layout_below="@+id/labelSearchName"
+        android:text="@string/label_display_address" />
+
+    <TextView
+        android:id="@+id/displayAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/displayName"
+        android:layout_toRightOf="@+id/labelDisplayAddress" />
+
+    <TextView
+        android:id="@+id/labelDisplayLastService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/displayMobile"
+        android:layout_below="@+id/labelDisplayAddress"
+        android:text="@string/label_display_mobile" />
+
+    <TextView
+        android:id="@+id/displayMobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/displayAddress"
+        android:layout_toRightOf="@+id/labelDisplayLastService" />
+
+</RelativeLayout>
