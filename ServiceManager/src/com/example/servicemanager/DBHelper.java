@@ -156,6 +156,44 @@ public class DBHelper extends SQLiteOpenHelper {
 		return customers;
 	}
 
+	// TODO need to correct logic, just copied form above method
+	public List<Customer> getUpcomingServices() throws java.text.ParseException {
+		List<Customer> customers = new LinkedList<Customer>();
+		String query = "SELECT  * FROM " + CUSTOMERS;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(query, null);
+
+		Customer customer = new Customer();
+
+		Calendar oldDate = Calendar.getInstance();
+		oldDate.setTime(new Date());
+		oldDate = getFormatedDate(oldDate);
+		oldDate.add(Calendar.MONTH, -3);
+
+		for (int i = 0; i < cursor.getCount(); i++) {
+			cursor.moveToNext();
+			Calendar lastService = getDate(cursor.getString(7));
+
+			int serviceCount = Integer.parseInt(cursor.getString(8));
+
+			if (lastService.compareTo(oldDate) <= 0 && serviceCount <= 4) {
+				customer = new Customer();
+				customer.setId(Integer.parseInt(cursor.getString(0)));
+				customer.setName(cursor.getString(1));
+				customer.setAddress(cursor.getString(2));
+				customer.setMobile(cursor.getString(3));
+				customer.setModel(cursor.getString(4));
+				customer.setPrice(Integer.parseInt(cursor.getString(5)));
+				customer.setSellingDate(cursor.getString(6));
+				customer.setLastService(cursor.getString(7));
+				customer.setServiceCount(serviceCount);
+				customers.add(customer);
+			}
+		}
+		return customers;
+	}
+
 	/**
 	 * @param id
 	 * @return TODO

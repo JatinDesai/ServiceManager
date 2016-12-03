@@ -52,6 +52,8 @@ public class MainActivity extends ActionBarActivity {
 					searchCustomer();
 				else if (item.getTitle().equals(DUE_SERVICES))
 					dueServices();
+				else if (item.getTitle().equals(UPCOMING_SERVICES))
+					upcomingServices();
 				else if (item.getTitle().equals(IMPORT))
 					importData();
 			}
@@ -87,6 +89,8 @@ public class MainActivity extends ActionBarActivity {
 				imageItems.add(new ImageItem(bitmap, SEARCH_CUSTOMER));
 			else if (i == 2)
 				imageItems.add(new ImageItem(bitmap, DUE_SERVICES));
+			else if (i == 4)
+				imageItems.add(new ImageItem(bitmap, UPCOMING_SERVICES));
 			else if (i == 3)
 				imageItems.add(new ImageItem(bitmap, IMPORT));
 		}
@@ -114,6 +118,13 @@ public class MainActivity extends ActionBarActivity {
 		startActivity(intent);
 	}
 
+	// TODO need to modify logic
+	public void upcomingServices() {
+		Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.SearchCustomer.class);
+		intent.putExtra(CALLED_FROM, UPCOMING_SERVICES);
+		startActivity(intent);
+	}
+
 	public void searchCustomer() {
 		Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.SearchCustomer.class);
 		intent.putExtra(CALLED_FROM, SEARCH_CUSTOMER);
@@ -127,6 +138,10 @@ public class MainActivity extends ActionBarActivity {
 		} else {
 			promptLicenseError();
 		}
+	}
+
+	public void updateCustomer() {
+		insertCustomer();
 	}
 
 	public void exportData() {

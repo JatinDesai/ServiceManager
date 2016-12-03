@@ -26,6 +26,7 @@
     <string name="label_display_service_3">"Service 3 : "</string>
     <string name="label_display_service_4">"Service 4 : "</string>
     <string name="due_services">Due Services</string>
+    <string name="upcoming_services">Upcoming Services</string>
     <string name="service_done">Service Done</string>
     <string name="title_activity_search_customer">Search Customer</string>
     <string name="date_label_set">Press the button to set the date</string>
@@ -43,6 +44,7 @@
         <item>@drawable/search_customer</item>
         <item>@drawable/due_services</item>
         <item>@drawable/import_data</item>
+        <item>@drawable/upcoming_services</item>
     </string-array>
 
     <string name="title_activity_service_history">ServiceHistory</string>

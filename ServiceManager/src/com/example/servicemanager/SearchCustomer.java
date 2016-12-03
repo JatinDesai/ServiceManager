@@ -60,6 +60,13 @@ public class SearchCustomer extends ActionBarActivity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		} else if (calledFrom.equals(UPCOMING_SERVICES)) {
+			try {
+				customers = mydb.getUpcomingServices(); //TODO need to write logic
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		Iterator itr = customers.listIterator();
