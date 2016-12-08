@@ -75,7 +75,7 @@ public class SearchCustomer extends ActionBarActivity {
       Customer customer = (Customer) itr.next();
       name.add(customer.getName());
       address.add(customer.getAddress());
-      mobile.add(String.valueOf(customer.getMobile()));
+      mobile.add(String.valueOf(customer.getContactNo()));
     }
 
     // Locate the ListView in listview_main.xml

@@ -21,12 +21,17 @@ public class DBHelper extends SQLiteOpenHelper {
   public static final String ID = "ID";
   public static final String NAME = "NAME";
   public static final String ADDRESS = "ADDRESS";
-  public static final String MOBILE = "MOBILE";
-  public static final String MODEL = "MODEL";
-  public static final String PRICE = "PRICE";
+  public static final String CONTACT_NO = "CONTACT_NO";
+  public static final String EMAIL_ID = "EMAIL_ID";
+  public static final String PRODUCT_NAME = "PRODUCT_NAME";
+  public static final String PRODUCT_MODEL_NO = "PRODUCT_MODEL_NO";
+  public static final String PRODUCT_PRICE = "PRODUCT_PRICE";
   public static final String SELLING_DATE = "SELLING_DATE";
-  public static final String LAST_SERVICE = "LAST_SERVICE";
-  public static final String SERVICE_COUNT = "SERVICE_COUNT";
+  public static final String LAST_SERVICE_DATE = "LAST_SERVICE_DATE";
+  public static final String NEXT_SERVICE_DATE = "NEXT_SERVICE_DATE";
+  public static final String TOTAL_SERVICE_COUNT = "TOTAL_SERVICE_COUNT";
+  public static final String TIME_STAMP = "TIME_STAMP";
+  public static final String IS_OBSOLATE = "IS_OBSOLATE";
   public static final String SERVICE_NO = "SERVICENO";
   public static final String SERVICE_DATE = "SERVICE_DATE";
   public static final String SERVICES = "SERVICES";
@@ -100,12 +105,18 @@ public class DBHelper extends SQLiteOpenHelper {
     ContentValues contentValues = new ContentValues();
     contentValues.put(NAME, customer.getName());
     contentValues.put(ADDRESS, customer.getAddress());
-    contentValues.put(MOBILE, customer.getMobile());
-    contentValues.put(MODEL, customer.getModel());
-    contentValues.put(PRICE, customer.getPrice());
+    contentValues.put(CONTACT_NO, customer.getContactNo());
+    contentValues.put(EMAIL_ID, customer.getEmailId());
+    contentValues.put(CONTACT_NO, customer.getContactNo());
+    contentValues.put(PRODUCT_NAME, customer.getProductName());
+    contentValues.put(PRODUCT_MODEL_NO, customer.getProductModelNo());
+    contentValues.put(PRODUCT_PRICE, customer.getProductPrice());
     contentValues.put(SELLING_DATE, customer.getSellingDate());
-    contentValues.put(LAST_SERVICE, customer.getLastService());
-    contentValues.put(SERVICE_COUNT, customer.getServiceCount());
+    contentValues.put(LAST_SERVICE_DATE, customer.getLastServiceDate());
+    contentValues.put(NEXT_SERVICE_DATE, customer.getNextServiceDate());
+    contentValues.put(TOTAL_SERVICE_COUNT, customer.getTotalServiceCount());
+    contentValues.put(TIME_STAMP, customer.getTimeStamp());
+    contentValues.put(IS_OBSOLATE, customer.getIsObsolate());
     db.insert(CUSTOMERS, null, contentValues);
     return true;
   }
@@ -113,14 +124,22 @@ public class DBHelper extends SQLiteOpenHelper {
   public boolean updateCustomerData(Customer customer) {
     SQLiteDatabase db = this.getWritableDatabase();
     ContentValues contentValues = new ContentValues();
+
     contentValues.put(NAME, customer.getName());
     contentValues.put(ADDRESS, customer.getAddress());
-    contentValues.put(MOBILE, customer.getMobile());
-    contentValues.put(MODEL, customer.getModel());
-    contentValues.put(PRICE, customer.getPrice());
+    contentValues.put(CONTACT_NO, customer.getContactNo());
+    contentValues.put(EMAIL_ID, customer.getEmailId());
+    contentValues.put(CONTACT_NO, customer.getContactNo());
+    contentValues.put(PRODUCT_NAME, customer.getProductName());
+    contentValues.put(PRODUCT_MODEL_NO, customer.getProductModelNo());
+    contentValues.put(PRODUCT_PRICE, customer.getProductPrice());
     contentValues.put(SELLING_DATE, customer.getSellingDate());
-    contentValues.put(LAST_SERVICE, customer.getLastService());
-    contentValues.put(SERVICE_COUNT, customer.getServiceCount());
+    contentValues.put(LAST_SERVICE_DATE, customer.getLastServiceDate());
+    contentValues.put(NEXT_SERVICE_DATE, customer.getNextServiceDate());
+    contentValues.put(TOTAL_SERVICE_COUNT, customer.getTotalServiceCount());
+    contentValues.put(TIME_STAMP, customer.getTimeStamp());
+    contentValues.put(IS_OBSOLATE, customer.getIsObsolate());
+
     db.update(CUSTOMERS, contentValues, "ID = ? ", new String[] { Integer.toString(customer.getId()) });
     return true;
   }
@@ -150,12 +169,17 @@ public class DBHelper extends SQLiteOpenHelper {
         customer.setId(Integer.parseInt(cursor.getString(0)));
         customer.setName(cursor.getString(1));
         customer.setAddress(cursor.getString(2));
-        customer.setMobile(cursor.getString(3));
-        customer.setModel(cursor.getString(4));
-        customer.setPrice(Integer.parseInt(cursor.getString(5)));
-        customer.setSellingDate(cursor.getString(6));
-        customer.setLastService(cursor.getString(7));
-        customer.setServiceCount(Integer.parseInt(cursor.getString(8)));
+        customer.setContactNo(cursor.getString(3));
+        customer.setEmailId(cursor.getString(4));
+        customer.setProductName(cursor.getString(5));
+        customer.setProductModelNo(cursor.getString(6));
+        customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
+        customer.setSellingDate(cursor.getString(8));
+        customer.setLastServiceDate(cursor.getString(9));
+        customer.setNextServiceDate(cursor.getString(10));
+        customer.setTotalServiceCount(Integer.parseInt(cursor.getString(11)));
+        customer.setTimeStamp(cursor.getString(12));
+        customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
         customers.add(customer);
       } while (cursor.moveToNext());
     }
@@ -184,15 +208,21 @@ public class DBHelper extends SQLiteOpenHelper {
 
       if (lastService.compareTo(oldDate) <= 0 && serviceCount <= 4) {
         customer = new Customer();
+
         customer.setId(Integer.parseInt(cursor.getString(0)));
         customer.setName(cursor.getString(1));
         customer.setAddress(cursor.getString(2));
-        customer.setMobile(cursor.getString(3));
-        customer.setModel(cursor.getString(4));
-        customer.setPrice(Integer.parseInt(cursor.getString(5)));
-        customer.setSellingDate(cursor.getString(6));
-        customer.setLastService(cursor.getString(7));
-        customer.setServiceCount(serviceCount);
+        customer.setContactNo(cursor.getString(3));
+        customer.setEmailId(cursor.getString(4));
+        customer.setProductName(cursor.getString(5));
+        customer.setProductModelNo(cursor.getString(6));
+        customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
+        customer.setSellingDate(cursor.getString(8));
+        customer.setLastServiceDate(cursor.getString(9));
+        customer.setNextServiceDate(cursor.getString(10));
+        customer.setTotalServiceCount(serviceCount);
+        customer.setTimeStamp(cursor.getString(12));
+        customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
         customers.add(customer);
       }
     }
@@ -221,17 +251,21 @@ public class DBHelper extends SQLiteOpenHelper {
       int serviceCount = Integer.parseInt(cursor.getString(8));
 
       if (lastService.compareTo(oldDate) <= 0 && serviceCount <= 4) {
-        customer = new Customer();
-        customer.setId(Integer.parseInt(cursor.getString(0)));
-        customer.setName(cursor.getString(1));
-        customer.setAddress(cursor.getString(2));
-        customer.setMobile(cursor.getString(3));
-        customer.setModel(cursor.getString(4));
-        customer.setPrice(Integer.parseInt(cursor.getString(5)));
-        customer.setSellingDate(cursor.getString(6));
-        customer.setLastService(cursor.getString(7));
-        customer.setServiceCount(serviceCount);
-        customers.add(customer);
+          customer.setId(Integer.parseInt(cursor.getString(0)));
+          customer.setName(cursor.getString(1));
+          customer.setAddress(cursor.getString(2));
+          customer.setContactNo(cursor.getString(3));
+          customer.setEmailId(cursor.getString(4));
+          customer.setProductName(cursor.getString(5));
+          customer.setProductModelNo(cursor.getString(6));
+          customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
+          customer.setSellingDate(cursor.getString(8));
+          customer.setLastServiceDate(cursor.getString(9));
+          customer.setNextServiceDate(cursor.getString(10));
+          customer.setTotalServiceCount(serviceCount);
+          customer.setTimeStamp(cursor.getString(12));
+          customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
+          customers.add(customer);
       }
     }
     return customers;
@@ -269,9 +303,9 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     ContentValues contentValues = new ContentValues();
     contentValues.put(ID, customer.getId());
-    contentValues.put(SERVICE_NO, customer.getServiceCount());
-    contentValues.put(SERVICE_DATE, customer.getLastService());
-    db.execSQL("INSERT INTO SERVICES(ID, SERVICE_NO, SERVICE_DATE) VALUES(" + "'" + customer.getId() + "', " + customer.getServiceCount() + ", '" + customer.getLastService() + "');");
+    contentValues.put(SERVICE_NO, customer.getTotalServiceCount());
+    contentValues.put(SERVICE_DATE, customer.getLastServiceDate());
+    db.execSQL("INSERT INTO SERVICES(ID, SERVICE_NO, SERVICE_DATE) VALUES(" + "'" + customer.getId() + "', " + customer.getTotalServiceCount() + ", '" + customer.getLastServiceDate() + "');");
     return true;
   }
 }

@@ -66,7 +66,7 @@ public class ListViewAdapter extends BaseAdapter {
 		// Set the results into TextViews
 		holder.name.setText(searchCustomerList.get(position).getName());
 		holder.address.setText(searchCustomerList.get(position).getAddress());
-		holder.mobile.setText(String.valueOf(searchCustomerList.get(position).getMobile()));
+		holder.mobile.setText(String.valueOf(searchCustomerList.get(position).getContactNo()));
 
 		// Listen for ListView Item Click
 		view.setOnClickListener(new OnClickListener() {
@@ -96,7 +96,7 @@ public class ListViewAdapter extends BaseAdapter {
 					searchCustomerList.add(wp);
 				} else if (wp.getAddress().toLowerCase(Locale.getDefault()).contains(charText)) {
 					searchCustomerList.add(wp);
-				}else if (wp.getMobile().toLowerCase(Locale.getDefault()).contains(charText)) {
+				}else if (wp.getContactNo().toLowerCase(Locale.getDefault()).contains(charText)) {
 					searchCustomerList.add(wp);
 				}
 			}

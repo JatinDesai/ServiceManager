@@ -36,7 +36,7 @@ public class SingleItemView extends ActionBarActivity {
 	private Calendar calendar;
 	private int year, month, day;
 
-	private DBHelper mydb = new DBHelper(this);
+	private DBHelper smDevDb = new DBHelper(this);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -47,9 +47,9 @@ public class SingleItemView extends ActionBarActivity {
 		customer = (Customer) i.getParcelableExtra(CUSTOMER);
 		displayName = customer.getName();
 		displayAddress = customer.getAddress();
-		displayMobile = String.valueOf(customer.getMobile());
+		displayMobile = String.valueOf(customer.getContactNo());
 		displaySellingDate = customer.getSellingDate();
-		displayServiceCount = String.valueOf(customer.getServiceCount());
+		displayServiceCount = String.valueOf(customer.getTotalServiceCount());
 
 		// Locate the TextViews in singleitemview.xml
 		name = (TextView) findViewById(R.id.displayName);
@@ -109,13 +109,13 @@ public class SingleItemView extends ActionBarActivity {
 
 	public void updateServiceCount() {
 
-		sellingDate = (TextView) findViewById(R.id.editTextDate);
+		sellingDate = (TextView) findViewById(R.id.editTextSellingDate);
 		calendar = Calendar.getInstance();
 		year = calendar.get(Calendar.YEAR);
 		month = calendar.get(Calendar.MONTH);
 		day = calendar.get(Calendar.DAY_OF_MONTH);
 
-		customer.setServiceCount(customer.getServiceCount() + 1);
+		customer.setTotalServiceCount(customer.getTotalServiceCount() + 1);
 		setDate();
 	}
 
@@ -126,8 +126,8 @@ public class SingleItemView extends ActionBarActivity {
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						customer.setServiceCount(0);
-						customer.setLastService(getDateString(Calendar.getInstance()));
+						customer.setTotalServiceCount(0);
+						customer.setLastServiceDate(getDateString(Calendar.getInstance()));
 						resetServices(customer);
 					}
 
@@ -135,12 +135,12 @@ public class SingleItemView extends ActionBarActivity {
 	}
 
 	public void resetServices(Customer customer) {
-		mydb.deleteServices(customer);
+		smDevDb.deleteServices(customer);
 		updateServiceDetail();
 	}
 	
 	private void updateServiceDetail() {
-		mydb.updateCustomerData(customer);
+		smDevDb.updateCustomerData(customer);
 		Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.SingleItemView.class);
 		intent.putExtra(CUSTOMER, customer);
 		startActivity(intent);
@@ -158,7 +158,7 @@ public class SingleItemView extends ActionBarActivity {
 				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						mydb.deleteCustomer(customer);
+						smDevDb.deleteCustomer(customer);
 						Intent intent = new Intent(getApplicationContext(),
 								com.example.servicemanager.MainActivity.class);
 						startActivity(intent);
@@ -203,13 +203,13 @@ public class SingleItemView extends ActionBarActivity {
 			customer = new Customer();
 		}
 		String date = composeDate(day, month, year);
-		customer.setLastService(date);
+		customer.setLastServiceDate(date);
 
 		serviceDone();
 	}
 
 	public void serviceDone() {
-		mydb.insertService(customer);
+		smDevDb.insertService(customer);
 		updateServiceDetail();
 	}
 }
