@@ -16,6 +16,10 @@
   <string name="reset_services">Reset Services</string>
   <string name="name">Name</string>
   <string name="save">Save Customer</string>
+  <string name="login">Login</string>
+  <string name="userName">User Name</string>
+  <string name="password">Password</string>
+  <string name="forgotpassword">Forgot Password?</string>
   <string name="mobile">Mobile</string>
   <string name="model">Model</string>
   <string name="price">Price</string>

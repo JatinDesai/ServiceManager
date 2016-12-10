@@ -13,7 +13,7 @@ import java.util.Locale;
 import com.example.servicemanager.Customer;
 import com.example.servicemanager.DBHelper;
 import com.example.servicemanager.ListViewAdapter;
-import com.example.servicemanager.MainActivity;
+import com.example.servicemanager.LoginActivity;
 import com.example.servicemanager.SearchCustomer;
 
 import android.app.Activity;

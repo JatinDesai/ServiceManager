@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent"
+  android:fitsSystemWindows="true">
+
+  <LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="50dp"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp">
+
+ <TextView
+    android:id = "@+id/tvCompanyName"
+    android:layout_width = "wrap_content"
+    android:layout_height = "wrap_content"
+    android:layout_gravity="center_horizontal"
+    android:text = "@string/app_name"
+    android:textColor = "@color/colorPrimary"
+    android:textSize = "@dimen/appName_font_size"/>
+
+ <ImageView
+    android:id="@+id/ivCompanyLogo"
+    android:src="@drawable/sm_icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"/>
+
+ <EditText
+    android:layout_width = "fill_parent"
+    android:layout_height = "fill_parent"
+    android:id = "@+id/etUserName"
+    android:hint = "@string/userName"
+    android:focusable = "true"
+    android:layout_marginTop = "50dp"/>
+
+ <EditText
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:inputType="textPassword"
+    android:id="@+id/etPassword"
+    android:hint="@string/password"/>
+
+ <Button
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:id="@+id/btnLogin"
+    android:text="@string/login"
+    android:background="@drawable/button"
+    android:layout_marginTop="30dp"
+    android:textSize="@dimen/btn_font_size"
+    android:textColor="@color/white"/>
+
+ <TextView android:id="@+id/tvForgotPw"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="24dp"
+    android:text="@string/forgotpassword"
+    android:gravity="center"
+    android:textColor = "@color/colorPrimary"
+    android:textSize="@dimen/label_font_size"/>
+
+</LinearLayout>
+
+</ScrollView>
