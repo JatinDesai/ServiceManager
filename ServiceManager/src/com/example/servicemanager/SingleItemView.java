@@ -160,7 +160,7 @@ public class SingleItemView extends ActionBarActivity {
 					public void onClick(DialogInterface dialog, int which) {
 						smDevDb.deleteCustomer(customer);
 						Intent intent = new Intent(getApplicationContext(),
-								com.example.servicemanager.MainActivity.class);
+								com.example.servicemanager.SearchCustomer.class);
 						startActivity(intent);
 					}
 				}).setNegativeButton("No", null).show();
@@ -168,7 +168,7 @@ public class SingleItemView extends ActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
-		Intent MainActivityIntent = new Intent(SingleItemView.this, MainActivity.class);
+		Intent MainActivityIntent = new Intent(SingleItemView.this, SearchCustomer.class);
 		startActivity(MainActivityIntent);
 		super.onBackPressed();
 	}
