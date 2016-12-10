@@ -100,7 +100,7 @@
       android:layout_alignBottom="@+id/editTextProductName"
       android:layout_alignParentLeft="true"
       android:layout_gravity="center"
-      android:drawableLeft="@drawable/product_icon2"
+      android:drawableLeft="@drawable/letter_p"
       android:singleLine="true" />
 
     <EditText
@@ -121,7 +121,7 @@
       android:layout_alignBottom="@+id/editTextProductModelNo"
       android:layout_alignParentLeft="true"
       android:layout_gravity="center"
-      android:drawableLeft="@drawable/model_45"
+      android:drawableLeft="@drawable/letter_m"
       android:singleLine="true" />
 
     <EditText
