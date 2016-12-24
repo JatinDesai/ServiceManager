@@ -69,6 +69,9 @@
             android:name=".ServiceHistory"
             android:label="@string/title_activity_service_history" >
         </activity>
+       <activity android:name=".ExportDataToDriveActivity" />
+       <activity android:name=".CreateFolderActivity" />
+       <activity android:name=".CreateFileInFolderActivity" />
     </application>
 
 </manifest>

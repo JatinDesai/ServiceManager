@@ -60,8 +60,14 @@ public class MainActivity extends ActionBarActivity {
 		});
 
 		setAlarm();
-
+        //TODO inprogress
+		//createFolderOnGoogleDriveForBkp();
 	}
+
+	/*public void createFolderOnGoogleDriveForBkp() {
+	  Intent intent1 = new Intent(getApplicationContext(), com.example.servicemanager.CreateFolderActivity.class);
+	  startActivity(intent1);
+	}*/
 
 	public void setAlarm() {
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
@@ -144,7 +150,8 @@ public class MainActivity extends ActionBarActivity {
 		insertCustomer();
 	}
 
-	public void exportData() {
+	//This is to export data to google drive
+	public void syncDataWithDrive() {
 		Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.SyncWithDrive.class);
 		finish();
 		startActivity(intent);
@@ -179,6 +186,6 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public void onBackPressed() {
-		exportData();
+		syncDataWithDrive();
 	}
 }

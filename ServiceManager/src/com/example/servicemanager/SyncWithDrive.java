@@ -7,48 +7,52 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.util.Calendar;
-
-import org.apache.commons.io.IOUtils;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi.DriveContentsResult;
-import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveFolder;
-import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.IntentSender;
+import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public class SyncWithDrive extends Activity implements
+GoogleApiClient.ConnectionCallbacks,
+GoogleApiClient.OnConnectionFailedListener {
 
-	private static final String TAG = "Google Drive Activity";
+	public static final String TAG = "Google Drive Activity";
 	private static final int REQUEST_CODE_RESOLUTION = 1;
 	private static final int REQUEST_CODE_OPENER = 2;
+	public static final String EXISTING_FOLDER_ID = "SMDBFolder";
+	// This folder's drive id should be from the database,
+	// this is an Unique value for EXISTING_FOLDER_ID
+    public static DriveId driveFolderId = DriveId.decodeFromString("DriveId:CAESABisDCCEq5Gr3lEoAQ==");
+
 	private GoogleApiClient mGoogleApiClient;
+	private DriveId mFolderDriveId;
 	private boolean fileOperation = false;
+	private boolean folderOperation = false;
 	DBHelper db = new DBHelper(this);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login_activity);
+
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+	            .addApi(Drive.API)
+	            .addScope(Drive.SCOPE_FILE)
+	            .addConnectionCallbacks(this)
+	            .addOnConnectionFailedListener(this)
+	            .build();
 	}
 
 	/**
@@ -123,7 +127,8 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 	 */
 	@Override
 	public void onConnected(Bundle connectionHint) {
-		createFileOnDrive();
+		//createFileOnDrive();
+		exportDataToDrive();
 	}
 
 	/**
@@ -137,25 +142,26 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 		Log.i(TAG, "GoogleApiClient connection suspended");
 	}
 
-	public void createFileOnDrive() {
+	/*public void createFileOnDrive() {
 		fileOperation = true;
 
 		// create new contents resource
 		Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(driveContentsCallback);
 
-	}
+	}*/
 
-	public void onClickOpenFile() {
+
+	/*public void onClickOpenFile() {
 		fileOperation = false;
 
 		// create new contents resource
 		Drive.DriveApi.newDriveContents(mGoogleApiClient).setResultCallback(driveContentsCallback);
-	}
+	}*/
 
 	/**
 	 * Open list of folder and file of the Google Drive
 	 */
-	public void OpenFileFromGoogleDrive() {
+	/*public void OpenFileFromGoogleDrive() {
 
 		IntentSender intentSender = Drive.DriveApi.newOpenFileActivityBuilder()
 				.setMimeType(new String[] { "text/plain", "text/html" }).build(mGoogleApiClient);
@@ -169,7 +175,7 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 			Log.w(TAG, "Unable to send intent", e);
 		}
 
-	}
+	}*/
 
 	/**
 	 * This is Result result handler of Drive contents. this callback method
@@ -177,7 +183,7 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 	 * OpenFileFromGoogleDrive() method, send intent onActivityResult() method
 	 * to handle result.
 	 */
-	final ResultCallback<DriveContentsResult> driveContentsCallback = new ResultCallback<DriveContentsResult>() {
+	/*final ResultCallback<DriveContentsResult> driveContentsCallback = new ResultCallback<DriveContentsResult>() {
 		@Override
 		public void onResult(DriveContentsResult result) {
 
@@ -186,7 +192,8 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 				if (fileOperation == true) {
 
 					try {
-						CreateFileOnGoogleDrive(result);
+						createDBBackupOnGoogleDrive(result);
+						//CreateFileAndFolderOnGoogleDrive(result);
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -200,7 +207,7 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 			}
 
 		}
-	};
+	};*/
 
 	/**
 	 * Create a file in root folder using MetadataChangeSet object.
@@ -208,7 +215,7 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 	 * @param result
 	 * @throws IOException 
 	 */
-	public void CreateFileOnGoogleDrive(DriveContentsResult result) throws IOException {
+	/*public void createDBBackupOnGoogleDrive(DriveContentsResult result) throws IOException {
 
 		try {
 			backupDatabase(getApplicationContext());
@@ -229,12 +236,12 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 		// create a file in root folder
 		Drive.DriveApi.getRootFolder(mGoogleApiClient).createFile(mGoogleApiClient, changeSet, driveContents)
 				.setResultCallback(fileCallback);
-	}
+	}*/
 
 	/**
 	 * Handle result of Created file
 	 */
-	final private ResultCallback<DriveFolder.DriveFileResult> fileCallback = new ResultCallback<DriveFolder.DriveFileResult>() {
+	/*final private ResultCallback<DriveFolder.DriveFileResult> fileCallback = new ResultCallback<DriveFolder.DriveFileResult>() {
 		@Override
 		public void onResult(DriveFolder.DriveFileResult result) {
 			if (result.getStatus().isSuccess()) {
@@ -249,7 +256,8 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 			return;
 
 		}
-	};
+	};*/
+
 
 	public static void backupDatabase(Context context) throws IOException {
 		// Open your local db as the input stream
@@ -271,5 +279,60 @@ public class SyncWithDrive extends Activity implements ConnectionCallbacks, OnCo
 		output.flush();
 		output.close();
 		fis.close();
-	}
+	};
+
+  //Pragnesh Start
+  public void exportDataToDrive() {
+    Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.ExportDataToDriveActivity.class);
+    startActivity(intent);
+    finish();
+  }
+
+  public boolean checkIfDriveFolderExist() {
+    // TODO
+    // get driveFolderId stored in database
+    // Parameter Name: DRIVE_FOLDER_ID
+    // Parameter Value like : DRIVE_FOLDER_ID = "DriveId:CAESABisDCCEq5Gr3lEoAQ=="
+    boolean driveFolderExist = false;
+    if (driveFolderId != null) {
+      driveFolderExist = true; //checkFolderOnDrive(driveFolderId);
+
+    } else {
+      driveFolderExist = false;
+    }
+
+    return driveFolderExist;
+  }
+
+  /*public boolean checkFolderOnDrive(DriveId folderId){
+	  //TODO in complete
+	  DriveFolder folder = Drive.DriveApi.getFolder(mGoogleApiClient, folderId);
+      //folder.getMetadata(mGoogleApiClient).setResultCallback((com.google.android.gms.common.api.ResultCallback<? super MetadataResult>) metadataRetrievedCallback);
+
+	  if (folder != null) {
+		  return true;
+	  } else {
+		  return false;
+	  }
+  }*/
+
+  public void setDriveFolderId(DriveId folderId) {
+    driveFolderId = folderId;
+  }
+
+  public void storeDriveFolderIdToDb(DriveId folderId) {
+    //TODO this needs to be stored in DB, as a follows
+    // Parameter Name: DRIVE_FOLDER_ID
+    // Parameter Value like : DRIVE_FOLDER_ID = "DriveId:CAESABisDCCEq5Gr3lEoAQ=="
+
+  }
+
+  public void showMessage(String message) {
+    Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+  }
+
+  public GoogleApiClient getGoogleApiClient() {
+    return mGoogleApiClient;
+  }
+  //Pragnesh end
 }
