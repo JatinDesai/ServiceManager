@@ -1,6 +1,7 @@
 package com.example.servicemanager;
 
 import static com.example.servicemanager.Utils.*;
+import static com.example.servicemanager.Constants.*;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -35,6 +36,10 @@ public class DBHelper extends SQLiteOpenHelper {
   public static final String SERVICE_NO = "SERVICENO";
   public static final String SERVICE_DATE = "SERVICE_DATE";
   public static final String SERVICES = "SERVICES";
+  public static final String GLOBAL_PARAMS = "GLOBAL_PARAMS";
+  public static final String PARAM_NAME = "PARAM_NAME";
+  public static final String PARAM_VALUE = "PARAM_VALUE";
+  public static final String COMMENT = "COMMENT";
 
   public DBHelper(Context context) {
     super(context, DATABASE_NAME, null, 1);
@@ -45,12 +50,32 @@ public class DBHelper extends SQLiteOpenHelper {
     createCustomersTable(db);
     createServicesTable(db);
     createProductsTable(db);
+    createGlobalParamsTable(db);
+    insertDefaultData(db);
   }
 
-  @Override
+private void insertDefaultData(SQLiteDatabase db) {
+
+    insertGlobalParam(db, USER_NAME);
+    insertGlobalParam(db, PASSWORD);
+  
+}
+
+private void insertGlobalParam(SQLiteDatabase db, String paramName) {
+	ContentValues contentValues = new ContentValues();
+	contentValues.put(PARAM_NAME, paramName);
+    contentValues.put(PARAM_VALUE, "");
+    contentValues.put(COMMENT, "");
+    contentValues.put(IS_OBSOLATE, 0);
+    contentValues.put(TIME_STAMP, new Date().toString());
+    db.insert(GLOBAL_PARAMS, null, contentValues);
+}
+
+@Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    db.execSQL("DROP TABLE IF EXISTS CUSTOMERS");
-    db.execSQL("DROP TABLE IF EXISTS SERVICES");
+    db.execSQL("DROP TABLE IF EXISTS " + CUSTOMERS);
+    db.execSQL("DROP TABLE IF EXISTS " + SERVICES);
+    db.execSQL("DROP TABLE IF EXISTS " + GLOBAL_PARAMS);
     onCreate(db);
   }
 
@@ -87,6 +112,18 @@ public class DBHelper extends SQLiteOpenHelper {
         + ")");
   }
 
+  private void createGlobalParamsTable(SQLiteDatabase db) {
+	  db.execSQL("CREATE TABLE "
+	  			+ GLOBAL_PARAMS
+	  			+ " ( "
+		        + "PARAM_NAME TEXT PRIMARY KEY, "
+		        + "PARAM_VALUE TEXT, "
+		        + "COMMENT TEXT, "
+		        + "IS_OBSOLATE INTEGER, "
+		        + "TIME_STAMP TEXT "
+		        + ")");
+  }
+
   public void createProductsTable(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE PRODUCTS ("
         + "ID INTEGER, "
@@ -98,6 +135,16 @@ public class DBHelper extends SQLiteOpenHelper {
         + "IS_OBSOLATE INTEGER, "
         + "PRIMARY KEY (PRODUCT_NAME, PRODUCT_MODEL_NO) "
         + ")");
+  }
+
+  public boolean updateGlobalParam(String name, String value, String comment) {
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(PARAM_VALUE, value);
+    contentValues.put(COMMENT, comment);
+
+    db.update(GLOBAL_PARAMS, contentValues, "PARAM_NAME = ? ", new String[] { name });
+    return true;
   }
 
   public boolean insertCustomer(Customer customer) {
@@ -307,5 +354,17 @@ public class DBHelper extends SQLiteOpenHelper {
     contentValues.put(SERVICE_DATE, customer.getLastServiceDate());
     db.execSQL("INSERT INTO SERVICES(ID, SERVICE_NO, SERVICE_DATE) VALUES(" + "'" + customer.getId() + "', " + customer.getTotalServiceCount() + ", '" + customer.getLastServiceDate() + "');");
     return true;
+  }
+
+public String getGlogbalParm(String paramName) {
+
+    String query = "SELECT  * FROM " + GLOBAL_PARAMS + " WHERE " + PARAM_NAME + " = '" + paramName + "'";
+
+    SQLiteDatabase db = this.getWritableDatabase();
+    Cursor cursor = db.rawQuery(query, null);
+    if (cursor.moveToFirst()) {
+    	return cursor.getString(1);
+    }
+    return null;
   }
 }

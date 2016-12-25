@@ -52,10 +52,12 @@ public class MainActivity extends ActionBarActivity {
 					searchCustomer();
 				else if (item.getTitle().equals(DUE_SERVICES))
 					dueServices();
-				else if (item.getTitle().equals(UPCOMING_SERVICES))
-					upcomingServices();
 				else if (item.getTitle().equals(IMPORT))
 					importData();
+				else if (item.getTitle().equals(UPCOMING_SERVICES))
+					upcomingServices();
+				else if (item.getTitle().equals(SETTINGS))
+					settings();
 			}
 		});
 
@@ -69,6 +71,11 @@ public class MainActivity extends ActionBarActivity {
 	  startActivity(intent1);
 	}*/
 
+	private void settings() {
+		Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.Settings.class);
+		startActivity(intent);
+	}
+	
 	public void setAlarm() {
 		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -95,10 +102,12 @@ public class MainActivity extends ActionBarActivity {
 				imageItems.add(new ImageItem(bitmap, SEARCH_CUSTOMER));
 			else if (i == 2)
 				imageItems.add(new ImageItem(bitmap, DUE_SERVICES));
-			else if (i == 4)
-				imageItems.add(new ImageItem(bitmap, UPCOMING_SERVICES));
 			else if (i == 3)
 				imageItems.add(new ImageItem(bitmap, IMPORT));
+			else if (i == 4)
+				imageItems.add(new ImageItem(bitmap, UPCOMING_SERVICES));
+			else if (i == 5)
+				imageItems.add(new ImageItem(bitmap, SETTINGS));
 		}
 		return imageItems;
 	}

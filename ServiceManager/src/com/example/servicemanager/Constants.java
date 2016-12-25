@@ -8,6 +8,7 @@ public class Constants {
   public static final String SEARCH_CUSTOMER = "Search Customer";
   public static final String DUE_SERVICES = "Due Services";
   public static final String UPCOMING_SERVICES = "Upcoming Services";
+  public static final String SETTINGS = "SETTINGS";
   public static final String IMPORT = "Import";
   public static final String CALLED_FROM = "calledFrom";
   public static final String CUSTOMER = "CUSTOMER";
@@ -15,4 +16,6 @@ public class Constants {
   public static final String DB_NAME = "SMDEV";
   public static final String SERVICE_NO = "Service No";
   public static final String SERVICE_DATE = "Service Date";
+  public static final String USER_NAME = "USER_NAME";
+  public static final String PASSWORD = "PASSWORD";
 }

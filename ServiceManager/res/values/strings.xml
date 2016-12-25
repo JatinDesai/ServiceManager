@@ -1,63 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="customerName">Customer Name</string>
-  <string name="address">Address</string>
-  <string name="contactNo">Contact No</string>
-  <string name="emailId">Email Id</string>
-  <string name="productName">Product Name</string>
-  <string name="productModelNo">Product Model No</string>
-  <string name="productPrice">Product Price</string>
-  <string name="sellingDate">Selling Date</string>
-  <string name="app_name">Service Manager</string>
-  <string name="action_settings">Settings</string>
-  <string name="new_customer">New Customer</string>
-  <string name="update_customer">Update Customer</string>
-  <string name="delete_customer">Delete Customer</string>
-  <string name="reset_services">Reset Services</string>
-  <string name="name">Name</string>
-  <string name="save">Save Customer</string>
-  <string name="login">Login</string>
-  <string name="userName">User Name</string>
-  <string name="password">Password</string>
-  <string name="forgotpassword">Forgot Password?</string>
-  <string name="mobile">Mobile</string>
-  <string name="model">Model</string>
-  <string name="price">Price</string>
-  <string name="date">Date</string>
-  <string name="title_activity_new_customer">New Customer</string>
-  <string name="search_customer">Search Customer</string>
-  <string name="label_display_name">"Name : "</string>
-  <string name="label_display_address">"Address : "</string>
-  <string name="label_display_mobile">"Mobile : "</string>
-  <string name="label_display_selling_date">"Selling Date : "</string>
-  <string name="label_display_service_count">"Total Services : "</string>
-  <string name="label_display_service_1">"Service 1 : "</string>
-  <string name="label_display_service_2">"Service 2 : "</string>
-  <string name="label_display_service_3">"Service 3 : "</string>
-  <string name="label_display_service_4">"Service 4 : "</string>
-  <string name="due_services">Due Services</string>
-  <string name="upcoming_services">Upcoming Services</string>
-  <string name="service_done">Service Done</string>
-  <string name="title_activity_search_customer">Search Customer</string>
-  <string name="date_label_set">Press the button to set the date</string>
-  <string name="date_button_set">Set Date</string>
-  <string name="date_view_set">The Date is: </string>
-  <string name="date_selected"></string>
-  <string name="export_data">Exit</string>
-  <string name="title_activity_export">Export</string>
-  <string name="exported_data">Data Exported Successfully.</string>
-  <string name="title_activity_sync_with_drive">SyncWithDrive</string>
-  <string name="service_history">Service History</string>
 
-  <string-array name="image_ids">
-    <item>@drawable/add_customer</item>
-    <item>@drawable/search_customer</item>
-    <item>@drawable/due_services</item>
-    <item>@drawable/import_data</item>
-    <item>@drawable/upcoming_services</item>
-  </string-array>
+    <string name="customerName">Customer Name</string>
+    <string name="address">Address</string>
+    <string name="contactNo">Contact No</string>
+    <string name="emailId">Email Id</string>
+    <string name="productName">Product Name</string>
+    <string name="productModelNo">Product Model No</string>
+    <string name="productPrice">Product Price</string>
+    <string name="sellingDate">Selling Date</string>
+    <string name="app_name">Service Manager</string>
+    <string name="action_settings">Settings</string>
+    <string name="new_customer">New Customer</string>
+    <string name="update_customer">Update Customer</string>
+    <string name="delete_customer">Delete Customer</string>
+    <string name="reset_services">Reset Services</string>
+    <string name="name">Name</string>
+    <string name="save">Save Customer</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="userName">User Name</string>
+    <string name="password">Password</string>
+    <string name="forgotpassword">Forgot Password?</string>
+    <string name="mobile">Mobile</string>
+    <string name="model">Model</string>
+    <string name="price">Price</string>
+    <string name="date">Date</string>
+    <string name="title_activity_new_customer">New Customer</string>
+    <string name="search_customer">Search Customer</string>
+    <string name="label_display_name">"Name : "</string>
+    <string name="label_display_address">"Address : "</string>
+    <string name="label_display_mobile">"Mobile : "</string>
+    <string name="label_display_selling_date">"Selling Date : "</string>
+    <string name="label_display_service_count">"Total Services : "</string>
+    <string name="label_display_service_1">"Service 1 : "</string>
+    <string name="label_display_service_2">"Service 2 : "</string>
+    <string name="label_display_service_3">"Service 3 : "</string>
+    <string name="label_display_service_4">"Service 4 : "</string>
+    <string name="due_services">Due Services</string>
+    <string name="upcoming_services">Upcoming Services</string>
+    <string name="service_done">Service Done</string>
+    <string name="title_activity_search_customer">Search Customer</string>
+    <string name="date_label_set">Press the button to set the date</string>
+    <string name="date_button_set">Set Date</string>
+    <string name="date_view_set">The Date is: </string>
+    <string name="date_selected"></string>
+    <string name="export_data">Exit</string>
+    <string name="title_activity_export">Export</string>
+    <string name="exported_data">Data Exported Successfully.</string>
+    <string name="title_activity_sync_with_drive">SyncWithDrive</string>
+    <string name="service_history">Service History</string>
 
-  <string name="title_activity_service_history">ServiceHistory</string>
-  <string name="hello_world">Hello world!</string>
+    <string-array name="image_ids">
+        <item>@drawable/add_customer</item>
+        <item>@drawable/search_customer</item>
+        <item>@drawable/due_services</item>
+        <item>@drawable/import_data</item>
+        <item>@drawable/upcoming_services</item>
+        <item>@drawable/settings</item>
+    </string-array>
+
+    <string name="title_activity_service_history">ServiceHistory</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_create_user">CreateUser</string>
 
 </resources>
