@@ -54,24 +54,24 @@ public class DBHelper extends SQLiteOpenHelper {
     insertDefaultData(db);
   }
 
-private void insertDefaultData(SQLiteDatabase db) {
+  private void insertDefaultData(SQLiteDatabase db) {
 
     insertGlobalParam(db, USER_NAME);
     insertGlobalParam(db, PASSWORD);
-  
-}
 
-private void insertGlobalParam(SQLiteDatabase db, String paramName) {
-	ContentValues contentValues = new ContentValues();
-	contentValues.put(PARAM_NAME, paramName);
+  }
+
+  private void insertGlobalParam(SQLiteDatabase db, String paramName) {
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(PARAM_NAME, paramName);
     contentValues.put(PARAM_VALUE, "");
     contentValues.put(COMMENT, "");
     contentValues.put(IS_OBSOLATE, 0);
     contentValues.put(TIME_STAMP, new Date().toString());
     db.insert(GLOBAL_PARAMS, null, contentValues);
-}
+  }
 
-@Override
+  @Override
   public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     db.execSQL("DROP TABLE IF EXISTS " + CUSTOMERS);
     db.execSQL("DROP TABLE IF EXISTS " + SERVICES);
@@ -80,61 +80,36 @@ private void insertGlobalParam(SQLiteDatabase db, String paramName) {
   }
 
   public void createCustomersTable(SQLiteDatabase db) {
-    db.execSQL("CREATE TABLE CUSTOMERS ("
-        + "ID INTEGER PRIMARY KEY, "
-        + "NAME TEXT, "
-        + "ADDRESS TEXT, "
-        + "CONTACT_NO NUMERIC, "
-        + "EMAIL_ID TEXT, "
-        + "PRODUCT_NAME TEXT, "
-        + "PRODUCT_MODEL_NO TEXT, "
-        + "PRODUCT_PRICE NUMERIC, "
-        + "SELLING_DATE TEXT, "
-        + "LAST_SERVICE_DATE TEXT, "
-        + "NEXT_SERVICE_DATE TEXT, "/*+ "SERVICE_DURATION TEXT, "*/ // based on service_duration from PRODUCTS table
-        + "TOTAL_SERVICE_COUNT NUMERIC, "
-        + "TIME_STAMP TEXT, "
-        + "IS_OBSOLATE INTEGER "
-        + ")");
+    db.execSQL("CREATE TABLE CUSTOMERS (" + "ID INTEGER PRIMARY KEY, " + "NAME TEXT, "
+        + "ADDRESS TEXT, " + "CONTACT_NO NUMERIC, " + "EMAIL_ID TEXT, " + "PRODUCT_NAME TEXT, "
+        + "PRODUCT_MODEL_NO TEXT, " + "PRODUCT_PRICE NUMERIC, " + "SELLING_DATE TEXT, "
+        + "LAST_SERVICE_DATE TEXT, " + "NEXT_SERVICE_DATE TEXT, "/* + "SERVICE_DURATION TEXT, " */ // based
+                                                                                                   // on
+                                                                                                   // service_duration
+                                                                                                   // from
+                                                                                                   // PRODUCTS
+                                                                                                   // table
+        + "TOTAL_SERVICE_COUNT NUMERIC, " + "TIME_STAMP TEXT, " + "IS_OBSOLATE INTEGER " + ")");
   }
 
   public void createServicesTable(SQLiteDatabase db) {
-    db.execSQL("CREATE TABLE SERVICES ("
-        + "ID INTEGER, "
-        + "SERVICE_NO INTEGER, "
-        + "SERVICE_DATE TEXT, "
-        + "SERVICE_AMOUNT NUMERIC, "
-        + "SERVICE_NOTES TEXT, "
-        + "TIME_STAMP TEXT, "
-        + "IS_OBSOLATE INTEGER, "
-        + "PRIMARY KEY (ID, SERVICE_NO), "
-        + "FOREIGN KEY (ID) REFERENCES CUSTOMERS(ID) "
-        + ")");
+    db.execSQL("CREATE TABLE SERVICES (" + "ID INTEGER, " + "SERVICE_NO INTEGER, "
+        + "SERVICE_DATE TEXT, " + "SERVICE_AMOUNT NUMERIC, " + "SERVICE_NOTES TEXT, "
+        + "TIME_STAMP TEXT, " + "IS_OBSOLATE INTEGER, " + "PRIMARY KEY (ID, SERVICE_NO), "
+        + "FOREIGN KEY (ID) REFERENCES CUSTOMERS(ID) " + ")");
   }
 
   private void createGlobalParamsTable(SQLiteDatabase db) {
-	  db.execSQL("CREATE TABLE "
-	  			+ GLOBAL_PARAMS
-	  			+ " ( "
-		        + "PARAM_NAME TEXT PRIMARY KEY, "
-		        + "PARAM_VALUE TEXT, "
-		        + "COMMENT TEXT, "
-		        + "IS_OBSOLATE INTEGER, "
-		        + "TIME_STAMP TEXT "
-		        + ")");
+    db.execSQL("CREATE TABLE " + GLOBAL_PARAMS + " ( " + "PARAM_NAME TEXT PRIMARY KEY, "
+        + "PARAM_VALUE TEXT, " + "COMMENT TEXT, " + "IS_OBSOLATE INTEGER, " + "TIME_STAMP TEXT "
+        + ")");
   }
 
   public void createProductsTable(SQLiteDatabase db) {
-    db.execSQL("CREATE TABLE PRODUCTS ("
-        + "ID INTEGER, "
-        + "PRODUCT_NAME TEXT, "
-        + "PRODUCT_MODEL_NO TEXT, "
-        + "SERVICE_DURATION NUMERIC, "
-        + "SERVICE_NOTES TEXT, "
-        + "TIME_STAMP TEXT, "
-        + "IS_OBSOLATE INTEGER, "
-        + "PRIMARY KEY (PRODUCT_NAME, PRODUCT_MODEL_NO) "
-        + ")");
+    db.execSQL("CREATE TABLE PRODUCTS (" + "ID INTEGER, " + "PRODUCT_NAME TEXT, "
+        + "PRODUCT_MODEL_NO TEXT, " + "SERVICE_DURATION NUMERIC, " + "SERVICE_NOTES TEXT, "
+        + "TIME_STAMP TEXT, " + "IS_OBSOLATE INTEGER, "
+        + "PRIMARY KEY (PRODUCT_NAME, PRODUCT_MODEL_NO) " + ")");
   }
 
   public boolean updateGlobalParam(String name, String value, String comment) {
@@ -143,7 +118,7 @@ private void insertGlobalParam(SQLiteDatabase db, String paramName) {
     contentValues.put(PARAM_VALUE, value);
     contentValues.put(COMMENT, comment);
 
-    db.update(GLOBAL_PARAMS, contentValues, "PARAM_NAME = ? ", new String[] { name });
+    db.update(GLOBAL_PARAMS, contentValues, "PARAM_NAME = ? ", new String[] {name});
     return true;
   }
 
@@ -187,19 +162,20 @@ private void insertGlobalParam(SQLiteDatabase db, String paramName) {
     contentValues.put(TIME_STAMP, customer.getTimeStamp());
     contentValues.put(IS_OBSOLATE, customer.getIsObsolate());
 
-    db.update(CUSTOMERS, contentValues, "ID = ? ", new String[] { Integer.toString(customer.getId()) });
+    db.update(CUSTOMERS, contentValues, "ID = ? ",
+        new String[] {Integer.toString(customer.getId())});
     return true;
   }
 
   public Integer deleteCustomer(Customer customer) {
     SQLiteDatabase db = this.getWritableDatabase();
     deleteServices(customer);
-    return db.delete(CUSTOMERS, "ID = ? ", new String[] { Integer.toString(customer.getId()) });
+    return db.delete(CUSTOMERS, "ID = ? ", new String[] {Integer.toString(customer.getId())});
   }
 
   public Integer deleteServices(Customer customer) {
     SQLiteDatabase db = this.getWritableDatabase();
-    return db.delete(SERVICES, "ID = ? ", new String[] { Integer.toString(customer.getId()) });
+    return db.delete(SERVICES, "ID = ? ", new String[] {Integer.toString(customer.getId())});
   }
 
   public List<Customer> getAllCustomers() {
@@ -298,21 +274,21 @@ private void insertGlobalParam(SQLiteDatabase db, String paramName) {
       int serviceCount = Integer.parseInt(cursor.getString(8));
 
       if (lastService.compareTo(oldDate) <= 0 && serviceCount <= 4) {
-          customer.setId(Integer.parseInt(cursor.getString(0)));
-          customer.setName(cursor.getString(1));
-          customer.setAddress(cursor.getString(2));
-          customer.setContactNo(cursor.getString(3));
-          customer.setEmailId(cursor.getString(4));
-          customer.setProductName(cursor.getString(5));
-          customer.setProductModelNo(cursor.getString(6));
-          customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
-          customer.setSellingDate(cursor.getString(8));
-          customer.setLastServiceDate(cursor.getString(9));
-          customer.setNextServiceDate(cursor.getString(10));
-          customer.setTotalServiceCount(serviceCount);
-          customer.setTimeStamp(cursor.getString(12));
-          customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
-          customers.add(customer);
+        customer.setId(Integer.parseInt(cursor.getString(0)));
+        customer.setName(cursor.getString(1));
+        customer.setAddress(cursor.getString(2));
+        customer.setContactNo(cursor.getString(3));
+        customer.setEmailId(cursor.getString(4));
+        customer.setProductName(cursor.getString(5));
+        customer.setProductModelNo(cursor.getString(6));
+        customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
+        customer.setSellingDate(cursor.getString(8));
+        customer.setLastServiceDate(cursor.getString(9));
+        customer.setNextServiceDate(cursor.getString(10));
+        customer.setTotalServiceCount(serviceCount);
+        customer.setTimeStamp(cursor.getString(12));
+        customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
+        customers.add(customer);
       }
     }
     return customers;
@@ -352,18 +328,20 @@ private void insertGlobalParam(SQLiteDatabase db, String paramName) {
     contentValues.put(ID, customer.getId());
     contentValues.put(SERVICE_NO, customer.getTotalServiceCount());
     contentValues.put(SERVICE_DATE, customer.getLastServiceDate());
-    db.execSQL("INSERT INTO SERVICES(ID, SERVICE_NO, SERVICE_DATE) VALUES(" + "'" + customer.getId() + "', " + customer.getTotalServiceCount() + ", '" + customer.getLastServiceDate() + "');");
+    db.execSQL("INSERT INTO SERVICES(ID, SERVICE_NO, SERVICE_DATE) VALUES(" + "'" + customer.getId()
+        + "', " + customer.getTotalServiceCount() + ", '" + customer.getLastServiceDate() + "');");
     return true;
   }
 
-public String getGlogbalParm(String paramName) {
+  public String getGlogbalParm(String paramName) {
 
-    String query = "SELECT  * FROM " + GLOBAL_PARAMS + " WHERE " + PARAM_NAME + " = '" + paramName + "'";
+    String query =
+        "SELECT  * FROM " + GLOBAL_PARAMS + " WHERE " + PARAM_NAME + " = '" + paramName + "'";
 
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(query, null);
     if (cursor.moveToFirst()) {
-    	return cursor.getString(1);
+      return cursor.getString(1);
     }
     return null;
   }

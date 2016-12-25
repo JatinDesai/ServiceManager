@@ -62,7 +62,7 @@ public class SearchCustomer extends ActionBarActivity {
       }
     } else if (calledFrom.equals(UPCOMING_SERVICES)) {
       try {
-        //TODO need to write logic
+        // TODO need to write logic
         customers = mydb.getUpcomingServices();
       } catch (ParseException e) {
         // TODO Auto-generated catch block

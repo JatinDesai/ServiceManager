@@ -133,7 +133,8 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
         customer.setProductPrice(Integer.valueOf(productPrice.getText().toString()));
         customer.setSellingDate(sellingDate.getText().toString());
         customer.setLastServiceDate(sellingDate.getText().toString());
-        //customer.setNextServiceDate(sellingDate.getText().toString()); // TODO need to check from default data
+        // customer.setNextServiceDate(sellingDate.getText().toString()); // TODO need to check from
+        // default data
         customer.setTotalServiceCount(0);
 
         smDevDb.insertCustomer(customer);
@@ -190,15 +191,16 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
     return null;
   }
 
-  private DatePickerDialog.OnDateSetListener myDateListener = new DatePickerDialog.OnDateSetListener() {
-    @Override
-    public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
-      // arg1 = year
-      // arg2 = month
-      // arg3 = day
-      showDate(arg1, arg2, arg3);
-    }
-  };
+  private DatePickerDialog.OnDateSetListener myDateListener =
+      new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker arg0, int arg1, int arg2, int arg3) {
+          // arg1 = year
+          // arg2 = month
+          // arg3 = day
+          showDate(arg1, arg2, arg3);
+        }
+      };
 
   private void showDate(int year, int month, int day) {
     String date = composeDate(day, month, year);

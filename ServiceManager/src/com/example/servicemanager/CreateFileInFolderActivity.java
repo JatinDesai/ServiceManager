@@ -31,24 +31,24 @@ public class CreateFileInFolderActivity extends SyncWithDrive {
 
   @Override
   public void onConnected(Bundle connectionHint) {
-    Drive.DriveApi.newDriveContents(getGoogleApiClient()).setResultCallback(driveContentsCallback);    
+    Drive.DriveApi.newDriveContents(getGoogleApiClient()).setResultCallback(driveContentsCallback);
   }
 
   final private ResultCallback<DriveContentsResult> driveContentsCallback =
       new ResultCallback<DriveContentsResult>() {
 
-    @Override
-    public void onResult(DriveContentsResult result) {
-      if (result.getStatus().isSuccess()) {   
-        try {
-          createDBBackupOnGoogleDrive(result);
-        } catch (IOException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
+        @Override
+        public void onResult(DriveContentsResult result) {
+          if (result.getStatus().isSuccess()) {
+            try {
+              createDBBackupOnGoogleDrive(result);
+            } catch (IOException e) {
+              // TODO Auto-generated catch block
+              e.printStackTrace();
+            }
+          }
         }
-      }
-    }
-  };
+      };
 
   public void createDBBackupOnGoogleDrive(DriveContentsResult result) throws IOException {
 
@@ -57,38 +57,37 @@ public class CreateFileInFolderActivity extends SyncWithDrive {
     } catch (IOException e) {
       Log.e(TAG, e.getMessage());
     }
-    
+
     final DriveContents driveContents = result.getDriveContents();
     InputStream mInput = new FileInputStream(getExternalFolderPath() + "/" + DB_NAME);
     OutputStream outputStream = driveContents.getOutputStream();
     Writer writer = new OutputStreamWriter(outputStream);
-    IOUtils.copy(mInput,outputStream);
-    
-    MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
-        .setTitle(FILE_NAME + getDateString(Calendar.getInstance()))
-        .setMimeType("text/plain").setStarred(true)
-        .build();
+    IOUtils.copy(mInput, outputStream);
+
+    MetadataChangeSet changeSet =
+        new MetadataChangeSet.Builder().setTitle(FILE_NAME + getDateString(Calendar.getInstance()))
+            .setMimeType("text/plain").setStarred(true).build();
 
     DriveFolder driveFolder = Drive.DriveApi.getFolder(getGoogleApiClient(), driveFolderId);
-    
+
     driveFolder.createFile(getGoogleApiClient(), changeSet, result.getDriveContents())
         .setResultCallback(createFileCallback);
   }
 
   final private ResultCallback<DriveFileResult> createFileCallback =
       new ResultCallback<DriveFileResult>() {
-    @Override
-    public void onResult(DriveFileResult result) {
-      if (!result.getStatus().isSuccess()) {
-        showMessage("Error while trying to create the file");
-        return;
-      }
-      showMessage("Created a file: " + result.getDriveFile().getDriveId());
-      
-      finish();
-      moveTaskToBack(true);
-      System.exit(1);
-      return;
-    }
-  };
+        @Override
+        public void onResult(DriveFileResult result) {
+          if (!result.getStatus().isSuccess()) {
+            showMessage("Error while trying to create the file");
+            return;
+          }
+          showMessage("Created a file: " + result.getDriveFile().getDriveId());
+
+          finish();
+          moveTaskToBack(true);
+          System.exit(1);
+          return;
+        }
+      };
 }

@@ -19,11 +19,11 @@ public class Customer implements Parcelable {
   private int totalServiceCount;
   private String timeStamp;
   private int isObsolate;
-  
-  public Customer(int id, String name, String address, String contactNo, String emailId, 
-		          String productName, String productModelNo,
-                  int productPrice, String sellingDate, String lastServiceDate, String nextServiceDate, 
-                  int totalServiceCount, String timeStamp, int isObsolate) {
+
+  public Customer(int id, String name, String address, String contactNo, String emailId,
+      String productName, String productModelNo, int productPrice, String sellingDate,
+      String lastServiceDate, String nextServiceDate, int totalServiceCount, String timeStamp,
+      int isObsolate) {
     super();
     this.id = id;
     this.name = name;
@@ -41,8 +41,7 @@ public class Customer implements Parcelable {
     this.isObsolate = isObsolate;
   }
 
-  public Customer() {
-  }
+  public Customer() {}
 
   public int getId() {
     return id;
@@ -147,7 +146,7 @@ public class Customer implements Parcelable {
   public void setTotalServiceCount(int totalServiceCount) {
     this.totalServiceCount = totalServiceCount;
   }
-  
+
   public String getTimeStamp() {
     return timeStamp;
   }
@@ -155,7 +154,7 @@ public class Customer implements Parcelable {
   public void setTimeStamp(String timeStamp) {
     this.timeStamp = timeStamp;
   }
-  
+
   public int getIsObsolate() {
     return isObsolate;
   }

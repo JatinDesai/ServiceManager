@@ -16,37 +16,37 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class CreateUser extends ActionBarActivity {
-	private DBHelper smDevDb;
+  private DBHelper smDevDb;
 
-	Button registerBtn;
-	EditText userName, password;
+  Button registerBtn;
+  EditText userName, password;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_create_user);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_create_user);
 
-		smDevDb = new DBHelper(this);
+    smDevDb = new DBHelper(this);
 
-		registerBtn = (Button) findViewById(R.id.btnRegister);
-		userName = (EditText) findViewById(R.id.etUserName);
-		password = (EditText) findViewById(R.id.etPassword);
-		registerBtn.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				insertCredentials();
-				login();
-			}
-		});
-	}
+    registerBtn = (Button) findViewById(R.id.btnRegister);
+    userName = (EditText) findViewById(R.id.etUserName);
+    password = (EditText) findViewById(R.id.etPassword);
+    registerBtn.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        insertCredentials();
+        login();
+      }
+    });
+  }
 
-	public void login() {
-			Intent in = new Intent(getApplicationContext(), com.example.servicemanager.MainActivity.class);
-			startActivity(in);
-	}
+  public void login() {
+    Intent in = new Intent(getApplicationContext(), com.example.servicemanager.MainActivity.class);
+    startActivity(in);
+  }
 
-	public void insertCredentials() {
-		smDevDb.updateGlobalParam(USER_NAME, userName.getText().toString(), null);
-		smDevDb.updateGlobalParam(PASSWORD, password.getText().toString(), null);
-	}
+  public void insertCredentials() {
+    smDevDb.updateGlobalParam(USER_NAME, userName.getText().toString(), null);
+    smDevDb.updateGlobalParam(PASSWORD, password.getText().toString(), null);
+  }
 }
