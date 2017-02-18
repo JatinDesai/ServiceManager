@@ -27,7 +27,7 @@ public class LoginActivity extends Activity {
 
     loginBtn = (Button) findViewById(R.id.btnLogin);
     userName = (EditText) findViewById(R.id.etUserName);
-    String user = smDevDb.getGlogbalParm(USER_NAME);
+    String user = smDevDb.getGlobalParam(USER_NAME);
     if (user.isEmpty()) {
       createUser();
     } else {
@@ -68,7 +68,7 @@ public class LoginActivity extends Activity {
   }
 
   public boolean validateLogin() {
-    if (password.getText().toString().equals(smDevDb.getGlogbalParm(PASSWORD))) {
+    if (password.getText().toString().equals(smDevDb.getGlobalParam(PASSWORD))) {
       return true;
     }
     return false;

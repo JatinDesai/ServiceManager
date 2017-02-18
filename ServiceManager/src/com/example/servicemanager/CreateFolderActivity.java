@@ -12,9 +12,6 @@ public class CreateFolderActivity extends SyncWithDrive {
   @Override
   public void onConnected(Bundle connectionHint) {
 
-    /*
-     * if (checkIfDriveFolderExist()) { return; }
-     */
     MetadataChangeSet changeSet =
         new MetadataChangeSet.Builder().setTitle(EXISTING_FOLDER_ID).build();
     Drive.DriveApi.getRootFolder(getGoogleApiClient()).createFolder(getGoogleApiClient(), changeSet)

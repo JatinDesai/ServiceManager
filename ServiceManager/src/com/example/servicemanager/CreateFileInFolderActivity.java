@@ -8,6 +8,7 @@ import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.DriveContents;
 import com.google.android.gms.drive.DriveApi.DriveContentsResult;
 import com.google.android.gms.drive.DriveFolder;
+import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.DriveFolder.DriveFileResult;
 import com.google.android.gms.drive.MetadataChangeSet;
 
@@ -82,7 +83,15 @@ public class CreateFileInFolderActivity extends SyncWithDrive {
             showMessage("Error while trying to create the file");
             return;
           }
-          showMessage("Created a file: " + result.getDriveFile().getDriveId());
+
+          // TODO this needs to be stored in DB, as a follows
+          // Parameter Name: DRIVE_FILE_ID
+          // Parameter Value like : DRIVE_FILE_ID = "DriveId:CAESABisDCCEq5Gr3lEoAQ=="
+          DriveId fileId = result.getDriveFile().getDriveId();
+          showMessage("Created a file: " + fileId);
+          
+          setDriveFileId(fileId);
+          storeDriveFileIdToDb(fileId);
 
           finish();
           moveTaskToBack(true);
