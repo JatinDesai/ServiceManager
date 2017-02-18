@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="50dp"
+    android:paddingTop="40dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp">
 
@@ -34,7 +34,7 @@
     android:id = "@+id/etUserName"
     android:hint = "@string/userName"
     android:focusable = "true"
-    android:layout_marginTop = "50dp"/>
+    android:layout_marginTop = "35dp"/>
 
  <EditText
     android:layout_width="fill_parent"
@@ -42,6 +42,13 @@
     android:inputType="textPassword"
     android:id="@+id/etPassword"
     android:hint="@string/password"/>
+
+ <EditText
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:inputType="textPassword"
+    android:id="@+id/etConfirmPassword"
+    android:hint="@string/confirmpassword"/>
 
  <Button
     android:layout_width="fill_parent"

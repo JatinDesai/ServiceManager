@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -148,31 +149,32 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
   // TODO should have generic validation method
   public boolean validateCustomer() {
     String nameV = name.getText().toString();
-    String addressV = address.getText().toString();
-    String mobileV = contactNo.getText().toString();
+    String addressV = address.getText().toString();    String contact = contactNo.getText().toString();
+    String eId = emailId.getText().toString();
+    String productNameV = productName.getText().toString();
     String modelV = productModelNo.getText().toString();
     String priceV = productPrice.getText().toString();
+    String sellingDateV = sellingDate.getText().toString();
     boolean validationResult = false;
+
     if (nameV.length() == 0) {
       name.setError("Name is required!");
+    } else if (addressV.length() == 0) {
+      address.setError("Address is required!");
+    } else if (contact.length() == 0 || !Patterns.PHONE.matcher(contact).matches()) {
+      contactNo.setError("Invalid Mobile No!");
+    } else if (eId.length() != 0 && !Patterns.EMAIL_ADDRESS.matcher(eId).matches()) {
+      emailId.setError("Invalid email Id!");
+    } else if (productNameV.length() == 0) {
+      productName.setError("Product Name is required!");
+    } else if (modelV.length() == 0) {
+      productModelNo.setError("Model No is required!");
+    } else if (priceV.length() == 0) {
+      productPrice.setError("Price is required!");
+    } else if (sellingDateV.length() == 0) {
+      sellingDate.setError("Selling Date is required!");
     } else {
-      if (addressV.length() == 0) {
-        address.setError("Address is required!");
-      } else {
-        if (mobileV.length() != 10) {
-          contactNo.setError("Invalid Mobile No!");
-        } else {
-          if (modelV.length() == 0) {
-            productModelNo.setError("Model No is required!");
-          } else {
-            if (priceV.length() == 0) {
-              productPrice.setError("Price is required!");
-            } else {
-              validationResult = true;
-            }
-          }
-        }
-      }
+      validationResult = true;
     }
     return validationResult;
   }

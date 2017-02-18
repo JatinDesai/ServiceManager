@@ -19,7 +19,7 @@ public class CreateUser extends ActionBarActivity {
   private DBHelper smDevDb;
 
   Button registerBtn;
-  EditText userName, password;
+  EditText userName, password, confirmPassword;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -31,11 +31,14 @@ public class CreateUser extends ActionBarActivity {
     registerBtn = (Button) findViewById(R.id.btnRegister);
     userName = (EditText) findViewById(R.id.etUserName);
     password = (EditText) findViewById(R.id.etPassword);
+    confirmPassword = (EditText) findViewById(R.id.etConfirmPassword);
     registerBtn.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        insertCredentials();
-        login();
+        if(verifyUserAndPasswords()){
+          insertCredentials();
+          login();
+        }
       }
     });
   }
@@ -43,6 +46,27 @@ public class CreateUser extends ActionBarActivity {
   public void login() {
     Intent in = new Intent(getApplicationContext(), com.example.servicemanager.MainActivity.class);
     startActivity(in);
+  }
+
+  public boolean verifyUserAndPasswords() {
+    String uName = userName.getText().toString();
+    String pwd = password.getText().toString();
+    String cpwd = confirmPassword.getText().toString();
+    boolean validationResult = false;
+
+    if (uName.length() == 0) {
+      userName.setError("User Name is required!");
+    } else if (pwd.length() == 0) {
+      password.setError("Password is required!");
+    } else if (cpwd.length() == 0) {
+      confirmPassword.setError("Confirm Password is required!");
+    } else if (!password.getText().toString().equals(confirmPassword.getText().toString())) {
+      confirmPassword.setError("Password and Confirm Password must be same!");
+    } else {
+      validationResult = true;
+    }
+
+    return validationResult;
   }
 
   public void insertCredentials() {
