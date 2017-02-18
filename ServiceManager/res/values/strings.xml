@@ -16,7 +16,9 @@
     <string name="delete_customer">Delete Customer</string>
     <string name="reset_services">Reset Services</string>
     <string name="name">Name</string>
-    <string name="save">Save Customer</string>
+    <string name="save_customer">Save Customer</string>
+    <string name="save_product">Save Product</string>
+    <string name="save_model">Save Model</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
     <string name="userName">User Name</string>
@@ -24,6 +26,7 @@
     <string name="forgotpassword">Forgot Password?</string>
     <string name="mobile">Mobile</string>
     <string name="model">Model</string>
+    <string name="product">Product</string>
     <string name="price">Price</string>
     <string name="date">Date</string>
     <string name="title_activity_new_customer">New Customer</string>
@@ -40,6 +43,7 @@
     <string name="due_services">Due Services</string>
     <string name="upcoming_services">Upcoming Services</string>
     <string name="service_done">Service Done</string>
+    <string name="add_product">Add Product</string>
     <string name="title_activity_search_customer">Search Customer</string>
     <string name="date_label_set">Press the button to set the date</string>
     <string name="date_button_set">Set Date</string>
@@ -58,11 +62,15 @@
         <item>@drawable/import_data</item>
         <item>@drawable/upcoming_services</item>
         <item>@drawable/settings</item>
+        <item>@drawable/manage_products</item>
     </string-array>
 
     <string name="title_activity_service_history">ServiceHistory</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_create_user">CreateUser</string>
+    <string name="title_activity_manage_products">ManageProducts</string>
+    <string name="title_activity_new_product">NewProduct</string>
+    <string name="title_activity_new_model">NewModel</string>
 
 </resources>

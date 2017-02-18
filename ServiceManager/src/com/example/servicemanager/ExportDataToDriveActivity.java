@@ -17,7 +17,7 @@ public class ExportDataToDriveActivity extends SyncWithDrive {
 
   public void createNewFolderOnDrive() {
     Intent intent1 =
-        new Intent(getApplicationContext(), com.example.servicemanager.CreateFolderActivity.class);
+        new Intent(getApplicationContext(), CreateFolderActivity.class);
     startActivity(intent1);
   }
 

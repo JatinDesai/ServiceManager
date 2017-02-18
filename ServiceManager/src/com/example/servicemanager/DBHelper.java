@@ -40,6 +40,7 @@ public class DBHelper extends SQLiteOpenHelper {
   public static final String PARAM_NAME = "PARAM_NAME";
   public static final String PARAM_VALUE = "PARAM_VALUE";
   public static final String COMMENT = "COMMENT";
+  public static final String PRODUCTS = "PRODUCTS";
 
   public DBHelper(Context context) {
     super(context, DATABASE_NAME, null, 1);
@@ -107,9 +108,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
   public void createProductsTable(SQLiteDatabase db) {
     db.execSQL("CREATE TABLE PRODUCTS (" + "ID INTEGER, " + "PRODUCT_NAME TEXT, "
-        + "PRODUCT_MODEL_NO TEXT, " + "SERVICE_DURATION NUMERIC, " + "SERVICE_NOTES TEXT, "
+        //+ "PRODUCT_MODEL_NO TEXT, " + "SERVICE_DURATION NUMERIC, " + "SERVICE_NOTES TEXT, "
         + "TIME_STAMP TEXT, " + "IS_OBSOLATE INTEGER, "
-        + "PRIMARY KEY (PRODUCT_NAME, PRODUCT_MODEL_NO) " + ")");
+        + "PRIMARY KEY (PRODUCT_NAME) " + ")");
   }
 
   public boolean updateGlobalParam(String name, String value, String comment) {
@@ -328,8 +329,10 @@ public class DBHelper extends SQLiteOpenHelper {
     contentValues.put(ID, customer.getId());
     contentValues.put(SERVICE_NO, customer.getTotalServiceCount());
     contentValues.put(SERVICE_DATE, customer.getLastServiceDate());
-    db.execSQL("INSERT INTO SERVICES(ID, SERVICE_NO, SERVICE_DATE) VALUES(" + "'" + customer.getId()
-        + "', " + customer.getTotalServiceCount() + ", '" + customer.getLastServiceDate() + "');");
+    contentValues.put(TIME_STAMP, customer.getTimeStamp());
+    contentValues.put(IS_OBSOLATE, customer.getIsObsolate());
+
+    db.insert(SERVICES, null, contentValues);
     return true;
   }
 
@@ -345,4 +348,40 @@ public class DBHelper extends SQLiteOpenHelper {
     }
     return null;
   }
+
+  public void insertProduct(String name) {
+
+    SQLiteDatabase db = this.getWritableDatabase();
+    ContentValues contentValues = new ContentValues();
+    contentValues.put(PRODUCT_NAME, name);
+    db.insert(PRODUCTS, null, contentValues);
+  }
+
+  public boolean isProductExists(String name) {
+
+    String query = "SELECT  * FROM " + PRODUCTS + " WHERE " + PRODUCT_NAME + " = '" + name + "'";
+
+    SQLiteDatabase db = this.getWritableDatabase();
+    Cursor cursor = db.rawQuery(query, null);
+    if (cursor.moveToFirst()) {
+      return true;
+    }
+    return false;
+  }
+
+  public List<String> getProducts() {
+    List<String> products = new LinkedList<String>();
+    String query = "SELECT  * FROM " + PRODUCTS;
+
+    SQLiteDatabase db = this.getWritableDatabase();
+    Cursor cursor = db.rawQuery(query, null);
+
+    if (cursor.moveToFirst()) {
+      do {
+        products.add(cursor.getString(1));
+      } while (cursor.moveToNext());
+    }
+    return products;
+  }
+
 }

@@ -41,7 +41,7 @@ public class CreateUser extends ActionBarActivity {
   }
 
   public void login() {
-    Intent in = new Intent(getApplicationContext(), com.example.servicemanager.MainActivity.class);
+    Intent in = new Intent(getApplicationContext(), MainActivity.class);
     startActivity(in);
   }
 

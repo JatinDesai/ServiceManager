@@ -48,7 +48,7 @@ public class AlarmService extends IntentService {
       notificationManager =
           (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
       Intent mIntent =
-          new Intent(getApplicationContext(), com.example.servicemanager.SearchCustomer.class);
+          new Intent(getApplicationContext(), SearchCustomer.class);
       mIntent.putExtra(CALLED_FROM, DUE_SERVICES);
       Bundle bundle = new Bundle();
       bundle.putString("test", "test");

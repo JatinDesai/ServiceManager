@@ -103,7 +103,7 @@ public class SingleItemView extends ActionBarActivity {
 
   public void displayServiceHistory() {
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.ServiceHistory.class);
+        new Intent(getApplicationContext(), ServiceHistory.class);
     intent.putExtra(CUSTOMER, customer);
     startActivity(intent);
   }
@@ -143,14 +143,14 @@ public class SingleItemView extends ActionBarActivity {
   private void updateServiceDetail() {
     smDevDb.updateCustomerData(customer);
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.SingleItemView.class);
+        new Intent(getApplicationContext(), SingleItemView.class);
     intent.putExtra(CUSTOMER, customer);
     startActivity(intent);
   }
 
   public void updateCustomer() {
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.NewCustomer.class);
+        new Intent(getApplicationContext(), NewCustomer.class);
     intent.putExtra(CUSTOMER, customer);
     startActivity(intent);
   }

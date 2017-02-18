@@ -9,7 +9,8 @@ public class Constants {
   public static final String SEARCH_CUSTOMER = "Search Customer";
   public static final String DUE_SERVICES = "Due Services";
   public static final String UPCOMING_SERVICES = "Upcoming Services";
-  public static final String SETTINGS = "SETTINGS";
+  public static final String SETTINGS = "Settings";
+  public static final String MANAGE_PRODUCTS = "Manage Products";
   public static final String IMPORT = "Import";
   public static final String CALLED_FROM = "calledFrom";
   public static final String CUSTOMER = "CUSTOMER";

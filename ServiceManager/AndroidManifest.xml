@@ -77,9 +77,21 @@
             android:name=".CreateUser"
             android:label="@string/title_activity_create_user" >
         </activity>
-       <activity android:name=".ExportDataToDriveActivity" />
-       <activity android:name=".CreateFolderActivity" />
-       <activity android:name=".CreateFileInFolderActivity" />
+        <activity android:name=".ExportDataToDriveActivity" />
+        <activity android:name=".CreateFolderActivity" />
+        <activity android:name=".CreateFileInFolderActivity" />
+        <activity
+            android:name=".ManageProducts"
+            android:label="@string/title_activity_manage_products" >
+        </activity>
+        <activity
+            android:name=".NewProduct"
+            android:label="@string/title_activity_new_product" >
+        </activity>
+        <activity
+            android:name=".NewModel"
+            android:label="@string/title_activity_new_model" >
+        </activity>
     </application>
 
 </manifest>

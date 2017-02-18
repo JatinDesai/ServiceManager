@@ -58,6 +58,8 @@ public class MainActivity extends ActionBarActivity {
           upcomingServices();
         else if (item.getTitle().equals(SETTINGS))
           settings();
+        else if (item.getTitle().equals(MANAGE_PRODUCTS))
+          manageProducts();
       }
     });
 
@@ -68,15 +70,20 @@ public class MainActivity extends ActionBarActivity {
 
   /*
    * public void createFolderOnGoogleDriveForBkp() { Intent intent1 = new
-   * Intent(getApplicationContext(), com.example.servicemanager.CreateFolderActivity.class);
+   * Intent(getApplicationContext(), CreateFolderActivity.class);
    * startActivity(intent1); }
    */
 
   private void settings() {
-    Intent intent = new Intent(getApplicationContext(), com.example.servicemanager.Settings.class);
+    Intent intent = new Intent(getApplicationContext(), Settings.class);
     startActivity(intent);
   }
 
+  private void manageProducts() {
+    Intent intent = new Intent(getApplicationContext(), ManageProducts.class);
+    startActivity(intent);
+  }
+  
   public void setAlarm() {
     alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
@@ -110,6 +117,8 @@ public class MainActivity extends ActionBarActivity {
         imageItems.add(new ImageItem(bitmap, UPCOMING_SERVICES));
       else if (i == 5)
         imageItems.add(new ImageItem(bitmap, SETTINGS));
+      else if (i == 6)
+        imageItems.add(new ImageItem(bitmap, MANAGE_PRODUCTS));
     }
     return imageItems;
   }
@@ -131,7 +140,7 @@ public class MainActivity extends ActionBarActivity {
 
   public void dueServices() {
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.SearchCustomer.class);
+        new Intent(getApplicationContext(), SearchCustomer.class);
     intent.putExtra(CALLED_FROM, DUE_SERVICES);
     startActivity(intent);
   }
@@ -139,14 +148,14 @@ public class MainActivity extends ActionBarActivity {
   // TODO need to modify logic
   public void upcomingServices() {
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.SearchCustomer.class);
+        new Intent(getApplicationContext(), SearchCustomer.class);
     intent.putExtra(CALLED_FROM, UPCOMING_SERVICES);
     startActivity(intent);
   }
 
   public void searchCustomer() {
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.SearchCustomer.class);
+        new Intent(getApplicationContext(), SearchCustomer.class);
     intent.putExtra(CALLED_FROM, SEARCH_CUSTOMER);
     startActivity(intent);
   }
@@ -154,7 +163,7 @@ public class MainActivity extends ActionBarActivity {
   public void insertCustomer() {
     if (IMEIs.contains(getIMEINumber())) {
       Intent intent =
-          new Intent(getApplicationContext(), com.example.servicemanager.NewCustomer.class);
+          new Intent(getApplicationContext(), NewCustomer.class);
       startActivity(intent);
     } else {
       promptLicenseError();
@@ -168,7 +177,7 @@ public class MainActivity extends ActionBarActivity {
   // This is to export data to google drive
   public void syncDataWithDrive() {
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.SyncWithDrive.class);
+        new Intent(getApplicationContext(), SyncWithDrive.class);
     finish();
     startActivity(intent);
   }

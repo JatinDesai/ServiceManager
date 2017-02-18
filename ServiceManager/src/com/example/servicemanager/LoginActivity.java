@@ -53,14 +53,14 @@ public class LoginActivity extends Activity {
   }
 
   public void createUser() {
-    Intent in = new Intent(getApplicationContext(), com.example.servicemanager.CreateUser.class);
+    Intent in = new Intent(getApplicationContext(), CreateUser.class);
     startActivity(in);
   }
 
   public void login() {
     if (validateLogin()) {
       Intent in =
-          new Intent(getApplicationContext(), com.example.servicemanager.MainActivity.class);
+          new Intent(getApplicationContext(), MainActivity.class);
       startActivity(in);
     } else {
       Toast.makeText(getApplicationContext(), "Wrong Credentials", Toast.LENGTH_SHORT).show();
