@@ -185,28 +185,31 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(query, null);
 
-    Customer customer = null;
     if (cursor.moveToFirst()) {
       do {
-        customer = new Customer();
-        customer.setId(Integer.parseInt(cursor.getString(0)));
-        customer.setName(cursor.getString(1));
-        customer.setAddress(cursor.getString(2));
-        customer.setContactNo(cursor.getString(3));
-        customer.setEmailId(cursor.getString(4));
-        customer.setProductName(cursor.getString(5));
-        customer.setProductModelNo(cursor.getString(6));
-        customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
-        customer.setSellingDate(cursor.getString(8));
-        customer.setLastServiceDate(cursor.getString(9));
-        customer.setNextServiceDate(cursor.getString(10));
-        customer.setTotalServiceCount(Integer.parseInt(cursor.getString(11)));
-        customer.setTimeStamp(cursor.getString(12));
-        customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
-        customers.add(customer);
+        customers.add(getCustomer(cursor));
       } while (cursor.moveToNext());
     }
     return customers;
+  }
+
+  private Customer getCustomer(Cursor cursor) {
+    Customer customer = new Customer();
+    customer.setId(Integer.parseInt(cursor.getString(0)));
+    customer.setName(cursor.getString(1));
+    customer.setAddress(cursor.getString(2));
+    customer.setContactNo(cursor.getString(3));
+    customer.setEmailId(cursor.getString(4));
+    customer.setProductName(cursor.getString(5));
+    customer.setProductModelNo(cursor.getString(6));
+    customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
+    customer.setSellingDate(cursor.getString(8));
+    customer.setLastServiceDate(cursor.getString(9));
+    customer.setNextServiceDate(cursor.getString(10));
+    customer.setTotalServiceCount(Integer.parseInt(cursor.getString(11)));
+    customer.setTimeStamp(cursor.getString(12));
+    customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
+    return customer;
   }
 
   public List<Customer> getDueServices() throws java.text.ParseException {
@@ -216,8 +219,6 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(query, null);
 
-    Customer customer = new Customer();
-
     Calendar oldDate = Calendar.getInstance();
     oldDate.setTime(new Date());
     oldDate = getFormatedDate(oldDate);
@@ -225,28 +226,13 @@ public class DBHelper extends SQLiteOpenHelper {
 
     for (int i = 0; i < cursor.getCount(); i++) {
       cursor.moveToNext();
-      Calendar lastService = getDate(cursor.getString(7));
+      Calendar lastService = getDate(cursor.getString(9));
 
-      int serviceCount = Integer.parseInt(cursor.getString(8));
+      // TODO max limit of services
+      //int serviceCount = Integer.parseInt(cursor.getString(8));
 
-      if (lastService.compareTo(oldDate) <= 0 && serviceCount <= 4) {
-        customer = new Customer();
-
-        customer.setId(Integer.parseInt(cursor.getString(0)));
-        customer.setName(cursor.getString(1));
-        customer.setAddress(cursor.getString(2));
-        customer.setContactNo(cursor.getString(3));
-        customer.setEmailId(cursor.getString(4));
-        customer.setProductName(cursor.getString(5));
-        customer.setProductModelNo(cursor.getString(6));
-        customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
-        customer.setSellingDate(cursor.getString(8));
-        customer.setLastServiceDate(cursor.getString(9));
-        customer.setNextServiceDate(cursor.getString(10));
-        customer.setTotalServiceCount(serviceCount);
-        customer.setTimeStamp(cursor.getString(12));
-        customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
-        customers.add(customer);
+      if (lastService.compareTo(oldDate) <= 0 /*&& serviceCount <= 4*/) {
+        customers.add(getCustomer(cursor));
       }
     }
     return customers;
@@ -260,35 +246,20 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(query, null);
 
-    Customer customer = new Customer();
-
     Calendar oldDate = Calendar.getInstance();
     oldDate.setTime(new Date());
     oldDate = getFormatedDate(oldDate);
     oldDate.add(Calendar.MONTH, -3);
+    oldDate.add(Calendar.DATE, 10);
 
     for (int i = 0; i < cursor.getCount(); i++) {
       cursor.moveToNext();
-      Calendar lastService = getDate(cursor.getString(7));
+      Calendar lastService = getDate(cursor.getString(9));
 
-      int serviceCount = Integer.parseInt(cursor.getString(8));
+      //int serviceCount = Integer.parseInt(cursor.getString(8));
 
-      if (lastService.compareTo(oldDate) <= 0 && serviceCount <= 4) {
-        customer.setId(Integer.parseInt(cursor.getString(0)));
-        customer.setName(cursor.getString(1));
-        customer.setAddress(cursor.getString(2));
-        customer.setContactNo(cursor.getString(3));
-        customer.setEmailId(cursor.getString(4));
-        customer.setProductName(cursor.getString(5));
-        customer.setProductModelNo(cursor.getString(6));
-        customer.setProductPrice(Integer.parseInt(cursor.getString(7)));
-        customer.setSellingDate(cursor.getString(8));
-        customer.setLastServiceDate(cursor.getString(9));
-        customer.setNextServiceDate(cursor.getString(10));
-        customer.setTotalServiceCount(serviceCount);
-        customer.setTimeStamp(cursor.getString(12));
-        customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
-        customers.add(customer);
+      if (lastService.compareTo(oldDate) <= 0/* && serviceCount <= 4*/) {
+        customers.add(getCustomer(cursor));
       }
     }
     return customers;
