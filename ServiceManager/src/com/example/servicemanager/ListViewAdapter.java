@@ -74,7 +74,7 @@ public class ListViewAdapter extends BaseAdapter {
       @Override
       public void onClick(View arg0) {
         // Send single item click data to SingleItemView Class
-        Intent intent = new Intent(mContext, com.example.servicemanager.SingleItemView.class);
+        Intent intent = new Intent(mContext, com.example.servicemanager.CustomerInfo.class);
         intent.putExtra(CUSTOMER, searchCustomerList.get(position));
 
         mContext.startActivity(intent);

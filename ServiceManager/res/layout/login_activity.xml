@@ -33,7 +33,6 @@
     android:layout_height = "fill_parent"
     android:id = "@+id/etUserName"
     android:hint = "@string/userName"
-    android:focusable = "true"
     android:layout_marginTop = "50dp"/>
 
  <EditText
@@ -41,6 +40,7 @@
     android:layout_height="fill_parent"
     android:inputType="textPassword"
     android:id="@+id/etPassword"
+    android:focusable = "true"
     android:hint="@string/password"/>
 
  <Button

@@ -16,7 +16,7 @@ import android.view.MenuItem;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
-public class SingleItemView extends ActionBarActivity {
+public class CustomerInfo extends ActionBarActivity {
   // Declare Variables
   TextView name;
   TextView address;
@@ -143,7 +143,7 @@ public class SingleItemView extends ActionBarActivity {
   private void updateServiceDetail() {
     smDevDb.updateCustomerData(customer);
     Intent intent =
-        new Intent(getApplicationContext(), com.example.servicemanager.SingleItemView.class);
+        new Intent(getApplicationContext(), com.example.servicemanager.CustomerInfo.class);
     intent.putExtra(CUSTOMER, customer);
     startActivity(intent);
   }
@@ -162,17 +162,20 @@ public class SingleItemView extends ActionBarActivity {
           @Override
           public void onClick(DialogInterface dialog, int which) {
             smDevDb.deleteCustomer(customer);
-            Intent intent = new Intent(getApplicationContext(),
-                com.example.servicemanager.SearchCustomer.class);
-            startActivity(intent);
+            launchSearchCustomer();
           }
         }).setNegativeButton("No", null).show();
+  }
+  
+  public void launchSearchCustomer() {
+    Intent intent = new Intent(CustomerInfo.this, SearchCustomer.class);
+    intent.putExtra(CALLED_FROM, SEARCH_CUSTOMER);
+    startActivity(intent);
   }
 
   @Override
   public void onBackPressed() {
-    Intent MainActivityIntent = new Intent(SingleItemView.this, SearchCustomer.class);
-    startActivity(MainActivityIntent);
+    launchSearchCustomer();
     super.onBackPressed();
   }
 

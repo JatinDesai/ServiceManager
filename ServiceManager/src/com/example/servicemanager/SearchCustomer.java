@@ -109,12 +109,12 @@ public class SearchCustomer extends ActionBarActivity {
     });
   }
 
-  // Not using options menu in this tutorial
+  /*// Not using options menu in this tutorial
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
-  }
+  }*/
 
   @Override
   public void onBackPressed() {

@@ -5,6 +5,7 @@ import static com.example.servicemanager.Utils.*;
 import java.util.Calendar;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +54,14 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
     month = calendar.get(Calendar.MONTH);
     day = calendar.get(Calendar.DAY_OF_MONTH);
     showDate(year, month, day);
+
+    sellingDate.setFocusable(false);
+    sellingDate.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        setDate(view);
+      }
+    });
 
     smDevDb = new DBHelper(this);
 
