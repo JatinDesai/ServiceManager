@@ -174,9 +174,7 @@
       android:layout_alignLeft="@+id/editTextProductPrice"
       android:layout_below="@+id/editTextProductPrice"
       android:layout_marginTop="10dp"
-      android:clickable="true"
       android:ems="10"
-      android:onClick="setDate"
       android:textSize="20sp" />
 
     <Button

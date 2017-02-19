@@ -35,6 +35,7 @@ public class LoginActivity extends Activity {
     }
     userName.setEnabled(false);
     password = (EditText) findViewById(R.id.etPassword);
+    password.requestFocus();
     forgotPwLink = (TextView) findViewById(R.id.tvForgotPw);
     loginBtn.setOnClickListener(new View.OnClickListener() {
       @Override

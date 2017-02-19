@@ -44,11 +44,12 @@
         </activity>
         <activity
             android:name=".SearchCustomer"
-            android:label="@string/title_activity_search_customer" >
+            android:label="@string/search_customer" >
         </activity>
         <activity
-            android:name=".SingleItemView"
-            android:noHistory="true" >
+            android:name=".CustomerInfo"
+            android:noHistory="true"
+            android:label="@string/customer_info" >
         </activity>
         <activity
             android:name=".SyncWithDrive"
@@ -67,7 +68,7 @@
 
         <activity
             android:name=".ServiceHistory"
-            android:label="@string/title_activity_service_history" >
+            android:label="@string/service_history" >
         </activity>
         <activity
             android:name=".Settings"

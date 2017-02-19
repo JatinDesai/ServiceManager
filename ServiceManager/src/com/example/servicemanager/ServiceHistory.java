@@ -135,4 +135,12 @@ public class ServiceHistory extends ActionBarActivity {
           new TableLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     }
   }
+
+  @Override
+  public void onBackPressed() {
+    Intent intent = new Intent(ServiceHistory.this, CustomerInfo.class);
+    intent.putExtra(CUSTOMER, customer);
+    startActivity(intent);
+    super.onBackPressed();
+  }
 }
