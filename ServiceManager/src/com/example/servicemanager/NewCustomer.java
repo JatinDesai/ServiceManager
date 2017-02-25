@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 public class NewCustomer extends ActionBarActivity // implements TextWatcher
 {
-  private DBHelper smDevDb;
+  private DBHelper smDevDb = new DBHelper(this);
 
   TextView name;
   TextView address;
@@ -31,6 +31,8 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
   TextView productModelNo;
   TextView productPrice;
   TextView sellingDate;
+  TextView serviceDuration;
+  TextView maxServices;
   Customer customer = new Customer();
 
   private Calendar calendar;
@@ -49,11 +51,16 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
     productModelNo = (TextView) findViewById(R.id.editTextProductModelNo);
     productPrice = (TextView) findViewById(R.id.editTextProductPrice);
     sellingDate = (TextView) findViewById(R.id.editTextSellingDate);
+    serviceDuration = (TextView) findViewById(R.id.editTextServiceDuration);
+    maxServices = (TextView) findViewById(R.id.editTextMaxServices);
     calendar = Calendar.getInstance();
     year = calendar.get(Calendar.YEAR);
     month = calendar.get(Calendar.MONTH);
     day = calendar.get(Calendar.DAY_OF_MONTH);
     showDate(year, month, day);
+    serviceDuration.setText((CharSequence) smDevDb.getGlobalParam(SERVICE_DURATION));
+    maxServices.setText((CharSequence) smDevDb.getGlobalParam(MAX_SERVICES));
+  
 
     sellingDate.setFocusable(false);
     sellingDate.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +70,6 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
       }
     });
 
-    smDevDb = new DBHelper(this);
-
     Intent i = getIntent();
     customer = (Customer) i.getParcelableExtra(CUSTOMER);
     if (customer != null) {
@@ -72,35 +77,32 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
 
       if (id > 0) {
         // means this is the view part not the add contact part.
-        String nam = customer.getName();
-        String add = customer.getAddress();
-        String conNo = customer.getContactNo();
-        String email = customer.getEmailId();
-        String proName = customer.getProductName();
-        String modelNo = customer.getProductModelNo();
-        int pPrice = customer.getProductPrice();
-        String sellingDat = customer.getSellingDate();
+        String currentName = customer.getName();
+        String currentAddress = customer.getAddress();
+        String currentContactNo = customer.getContactNo();
+        String currentEmailId = customer.getEmailId();
+        String currentProductName = customer.getProductName();
+        String currentProductModelNo = customer.getProductModelNo();
+        int currentProductPrice = customer.getProductPrice();
+        String currentSellingDate = customer.getSellingDate();
+        int currentServiceDuration = customer.getServiceDuration();
+        int currentMaxServices = customer.getMaxServices();
 
-        name.setText((CharSequence) nam);
-        address.setText((CharSequence) add);
-        contactNo.setText((CharSequence) String.valueOf(conNo));
-        emailId.setText((CharSequence) email);
-        productName.setText((CharSequence) proName);
-        productModelNo.setText((CharSequence) modelNo);
-        productPrice.setText((CharSequence) String.valueOf(pPrice));
-        sellingDate.setText((CharSequence) sellingDat);
+        name.setText((CharSequence) currentName);
+        address.setText((CharSequence) currentAddress);
+        contactNo.setText((CharSequence) String.valueOf(currentContactNo));
+        emailId.setText((CharSequence) currentEmailId);
+        productName.setText((CharSequence) currentProductName);
+        productModelNo.setText((CharSequence) currentProductModelNo);
+        productPrice.setText((CharSequence) String.valueOf(currentProductPrice));
+        sellingDate.setText((CharSequence) currentSellingDate);
+        serviceDuration.setText((CharSequence) String.valueOf(currentServiceDuration));
+        maxServices.setText((CharSequence) String.valueOf(currentMaxServices));
 
         final Button button = (Button) findViewById(R.id.btnSave);
         button.setOnClickListener(new View.OnClickListener() {
           public void onClick(View v) {
-            customer.setName(name.getText().toString());
-            customer.setAddress(address.getText().toString());
-            customer.setContactNo(contactNo.getText().toString());
-            customer.setEmailId(emailId.getText().toString());
-            customer.setProductName(productName.getText().toString());
-            customer.setProductModelNo(productModelNo.getText().toString());
-            customer.setProductPrice(Integer.valueOf(productPrice.getText().toString()));
-            customer.setSellingDate(sellingDate.getText().toString());
+            updateCustomerObject(customer);
             if (customer.getTotalServiceCount() == 0) {
               customer.setLastServiceDate(sellingDate.getText().toString());
             }
@@ -127,6 +129,18 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
     return super.onOptionsItemSelected(item);
   }
 
+  private void updateCustomerObject(Customer customer) {
+    customer.setName(name.getText().toString());
+    customer.setAddress(address.getText().toString());
+    customer.setContactNo(contactNo.getText().toString());
+    customer.setEmailId(emailId.getText().toString());
+    customer.setProductName(productName.getText().toString());
+    customer.setProductModelNo(productModelNo.getText().toString());
+    customer.setProductPrice(Integer.valueOf(productPrice.getText().toString()));
+    customer.setSellingDate(sellingDate.getText().toString());
+    customer.setServiceDuration(Integer.valueOf(serviceDuration.getText().toString()));
+    customer.setMaxServices(Integer.valueOf(maxServices.getText().toString()));
+  }
   public void insertUpdateCustomer(View view) {
     boolean validationResult = validateCustomer();
     if (validationResult) {
@@ -134,15 +148,7 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
         smDevDb.updateCustomerData(customer);
       } else {
         Customer customer = new Customer();
-
-        customer.setName(name.getText().toString());
-        customer.setAddress(address.getText().toString());
-        customer.setContactNo(contactNo.getText().toString());
-        customer.setEmailId(emailId.getText().toString());
-        customer.setProductName(productName.getText().toString());
-        customer.setProductModelNo(productModelNo.getText().toString());
-        customer.setProductPrice(Integer.valueOf(productPrice.getText().toString()));
-        customer.setSellingDate(sellingDate.getText().toString());
+        updateCustomerObject(customer);
         customer.setLastServiceDate(sellingDate.getText().toString());
         // customer.setNextServiceDate(sellingDate.getText().toString()); // TODO need to check from
         // default data
@@ -165,6 +171,8 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
     String modelV = productModelNo.getText().toString();
     String priceV = productPrice.getText().toString();
     String sellingDateV = sellingDate.getText().toString();
+    String serviceDurationV = productPrice.getText().toString();
+    String maxServicesV = productPrice.getText().toString();
     boolean validationResult = false;
 
     if (nameV.length() == 0) {
@@ -183,6 +191,10 @@ public class NewCustomer extends ActionBarActivity // implements TextWatcher
       productPrice.setError("Price is required!");
     } else if (sellingDateV.length() == 0) {
       sellingDate.setError("Selling Date is required!");
+    } else if (serviceDurationV.length() == 0) {
+      serviceDuration.setError("Service Duration is required!");
+    } else if (maxServicesV.length() == 0) {
+      maxServices.setError("Max Services is required!");
     } else {
       validationResult = true;
     }

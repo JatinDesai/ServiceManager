@@ -21,4 +21,6 @@ public class Constants {
   public static final String PASSWORD = "PASSWORD";
   public static final String DRIVE_FOLDER_ID = "DRIVE_FOLDER_ID";
   public static final String DRIVE_FILE_ID = "DRIVE_FILE_ID";
+  public static final String SERVICE_DURATION = "SERVICE_DURATION";
+  public static final String MAX_SERVICES = "MAX_SERVICES";
 }

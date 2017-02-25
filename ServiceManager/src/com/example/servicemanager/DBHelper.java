@@ -55,17 +55,18 @@ public class DBHelper extends SQLiteOpenHelper {
   }
 
   private void insertDefaultData(SQLiteDatabase db) {
-
-    insertGlobalParam(db, USER_NAME);
-    insertGlobalParam(db, PASSWORD);
-    insertGlobalParam(db, DRIVE_FOLDER_ID);
-    insertGlobalParam(db, DRIVE_FILE_ID);
+    insertGlobalParam(db, USER_NAME, "");
+    insertGlobalParam(db, PASSWORD, "");
+    insertGlobalParam(db, DRIVE_FOLDER_ID, "");
+    insertGlobalParam(db, DRIVE_FILE_ID, "");
+    insertGlobalParam(db, SERVICE_DURATION, "3");
+    insertGlobalParam(db, MAX_SERVICES, "4");
   }
 
-  private void insertGlobalParam(SQLiteDatabase db, String paramName) {
+  private void insertGlobalParam(SQLiteDatabase db, String paramName, String paramValue) {
     ContentValues contentValues = new ContentValues();
     contentValues.put(PARAM_NAME, paramName);
-    contentValues.put(PARAM_VALUE, "");
+    contentValues.put(PARAM_VALUE, paramValue);
     contentValues.put(COMMENT, "");
     contentValues.put(IS_OBSOLATE, 0);
     contentValues.put(TIME_STAMP, new Date().toString());
@@ -84,12 +85,8 @@ public class DBHelper extends SQLiteOpenHelper {
     db.execSQL("CREATE TABLE CUSTOMERS (" + "ID INTEGER PRIMARY KEY, " + "NAME TEXT, "
         + "ADDRESS TEXT, " + "CONTACT_NO NUMERIC, " + "EMAIL_ID TEXT, " + "PRODUCT_NAME TEXT, "
         + "PRODUCT_MODEL_NO TEXT, " + "PRODUCT_PRICE NUMERIC, " + "SELLING_DATE TEXT, "
-        + "LAST_SERVICE_DATE TEXT, " + "NEXT_SERVICE_DATE TEXT, "/* + "SERVICE_DURATION TEXT, " */ // based
-                                                                                                   // on
-                                                                                                   // service_duration
-                                                                                                   // from
-                                                                                                   // PRODUCTS
-                                                                                                   // table
+        + "LAST_SERVICE_DATE TEXT, " + "NEXT_SERVICE_DATE TEXT, " + "SERVICE_DURATION NUMERIC, "
+        + "MAX_SERVICES NUMERIC, "
         + "TOTAL_SERVICE_COUNT NUMERIC, " + "TIME_STAMP TEXT, " + "IS_OBSOLATE INTEGER " + ")");
   }
 
@@ -125,6 +122,11 @@ public class DBHelper extends SQLiteOpenHelper {
 
   public boolean insertCustomer(Customer customer) {
     SQLiteDatabase db = this.getWritableDatabase();
+    db.insert(CUSTOMERS, null, createContentValues(customer));
+    return true;
+  }
+
+  private ContentValues createContentValues(Customer customer) {
     ContentValues contentValues = new ContentValues();
     contentValues.put(NAME, customer.getName());
     contentValues.put(ADDRESS, customer.getAddress());
@@ -137,33 +139,17 @@ public class DBHelper extends SQLiteOpenHelper {
     contentValues.put(SELLING_DATE, customer.getSellingDate());
     contentValues.put(LAST_SERVICE_DATE, customer.getLastServiceDate());
     contentValues.put(NEXT_SERVICE_DATE, customer.getNextServiceDate());
+    contentValues.put(SERVICE_DURATION, customer.getServiceDuration());
+    contentValues.put(MAX_SERVICES, customer.getMaxServices());
     contentValues.put(TOTAL_SERVICE_COUNT, customer.getTotalServiceCount());
     contentValues.put(TIME_STAMP, customer.getTimeStamp());
     contentValues.put(IS_OBSOLATE, customer.getIsObsolate());
-    db.insert(CUSTOMERS, null, contentValues);
-    return true;
+    return contentValues;
   }
 
   public boolean updateCustomerData(Customer customer) {
     SQLiteDatabase db = this.getWritableDatabase();
-    ContentValues contentValues = new ContentValues();
-
-    contentValues.put(NAME, customer.getName());
-    contentValues.put(ADDRESS, customer.getAddress());
-    contentValues.put(CONTACT_NO, customer.getContactNo());
-    contentValues.put(EMAIL_ID, customer.getEmailId());
-    contentValues.put(CONTACT_NO, customer.getContactNo());
-    contentValues.put(PRODUCT_NAME, customer.getProductName());
-    contentValues.put(PRODUCT_MODEL_NO, customer.getProductModelNo());
-    contentValues.put(PRODUCT_PRICE, customer.getProductPrice());
-    contentValues.put(SELLING_DATE, customer.getSellingDate());
-    contentValues.put(LAST_SERVICE_DATE, customer.getLastServiceDate());
-    contentValues.put(NEXT_SERVICE_DATE, customer.getNextServiceDate());
-    contentValues.put(TOTAL_SERVICE_COUNT, customer.getTotalServiceCount());
-    contentValues.put(TIME_STAMP, customer.getTimeStamp());
-    contentValues.put(IS_OBSOLATE, customer.getIsObsolate());
-
-    db.update(CUSTOMERS, contentValues, "ID = ? ",
+    db.update(CUSTOMERS, createContentValues(customer), "ID = ? ",
         new String[] {Integer.toString(customer.getId())});
     return true;
   }
@@ -207,9 +193,11 @@ public class DBHelper extends SQLiteOpenHelper {
     customer.setSellingDate(cursor.getString(8));
     customer.setLastServiceDate(cursor.getString(9));
     customer.setNextServiceDate(cursor.getString(10));
-    customer.setTotalServiceCount(Integer.parseInt(cursor.getString(11)));
-    customer.setTimeStamp(cursor.getString(12));
-    customer.setIsObsolate(Integer.parseInt(cursor.getString(13)));
+    customer.setServiceDuration(Integer.parseInt(cursor.getString(11)));
+    customer.setMaxServices(Integer.parseInt(cursor.getString(12)));
+    customer.setTotalServiceCount(Integer.parseInt(cursor.getString(13)));
+    customer.setTimeStamp(cursor.getString(14));
+    customer.setIsObsolate(Integer.parseInt(cursor.getString(15)));
     return customer;
   }
 
@@ -220,23 +208,31 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(query, null);
 
-    Calendar oldDate = Calendar.getInstance();
-    oldDate.setTime(new Date());
-    oldDate = getFormatedDate(oldDate);
-    oldDate.add(Calendar.MONTH, -3);
-
     for (int i = 0; i < cursor.getCount(); i++) {
       cursor.moveToNext();
       Calendar lastService = getDate(cursor.getString(9));
-
-      // TODO max limit of services
-      //int serviceCount = Integer.parseInt(cursor.getString(8));
-
-      if (lastService.compareTo(oldDate) <= 0 /*&& serviceCount <= 4*/) {
+      int serviceDuration = Integer.parseInt(cursor.getString(11));
+      int maxServices = Integer.parseInt(cursor.getString(12));
+      Calendar oldDate = getLastDayToCheckDueService(serviceDuration);
+      int serviceCount = Integer.parseInt(cursor.getString(13));
+      if (isDueService(lastService, maxServices, oldDate, serviceCount)) {
         customers.add(getCustomer(cursor));
       }
     }
     return customers;
+  }
+
+  private boolean isDueService(Calendar lastService, int maxServices, Calendar oldDate,
+      int serviceCount) {
+    return lastService.compareTo(oldDate) <= 0 && serviceCount < maxServices;
+  }
+
+  private Calendar getLastDayToCheckDueService(int serviceDuration) {
+    Calendar oldDate = Calendar.getInstance();
+    oldDate.setTime(new Date());
+    oldDate = getFormatedDate(oldDate);
+    oldDate.add(Calendar.MONTH, -serviceDuration);
+    return oldDate;
   }
 
   // TODO need to correct logic, just copied form above method
@@ -247,19 +243,15 @@ public class DBHelper extends SQLiteOpenHelper {
     SQLiteDatabase db = this.getWritableDatabase();
     Cursor cursor = db.rawQuery(query, null);
 
-    Calendar oldDate = Calendar.getInstance();
-    oldDate.setTime(new Date());
-    oldDate = getFormatedDate(oldDate);
-    oldDate.add(Calendar.MONTH, -3);
-    oldDate.add(Calendar.DATE, 10);
-
     for (int i = 0; i < cursor.getCount(); i++) {
       cursor.moveToNext();
       Calendar lastService = getDate(cursor.getString(9));
-
-      //int serviceCount = Integer.parseInt(cursor.getString(8));
-
-      if (lastService.compareTo(oldDate) <= 0/* && serviceCount <= 4*/) {
+      int serviceDuration = Integer.parseInt(cursor.getString(11));
+      int maxServices = Integer.parseInt(cursor.getString(12));
+      Calendar oldDate = getLastDayToCheckDueService(serviceDuration);
+      oldDate.add(Calendar.DATE, 10);
+      int serviceCount = Integer.parseInt(cursor.getString(13));
+      if (isDueService(lastService, maxServices, oldDate, serviceCount)) {
         customers.add(getCustomer(cursor));
       }
     }
