@@ -58,7 +58,8 @@ public class DBHelper extends SQLiteOpenHelper {
 
     insertGlobalParam(db, USER_NAME);
     insertGlobalParam(db, PASSWORD);
-
+    insertGlobalParam(db, DRIVE_FOLDER_ID);
+    insertGlobalParam(db, DRIVE_FILE_ID);
   }
 
   private void insertGlobalParam(SQLiteDatabase db, String paramName) {
@@ -304,7 +305,7 @@ public class DBHelper extends SQLiteOpenHelper {
     return true;
   }
 
-  public String getGlogbalParm(String paramName) {
+  public String getGlobalParam(String paramName) {
 
     String query =
         "SELECT  * FROM " + GLOBAL_PARAMS + " WHERE " + PARAM_NAME + " = '" + paramName + "'";

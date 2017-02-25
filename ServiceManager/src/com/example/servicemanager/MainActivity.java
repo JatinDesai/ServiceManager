@@ -4,7 +4,6 @@ import static com.example.servicemanager.Constants.*;
 import static com.example.servicemanager.Utils.getInterval;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import android.annotation.SuppressLint;
@@ -176,15 +175,20 @@ public class MainActivity extends ActionBarActivity {
   public void importData() {
 
     if (IMEIs.contains(getIMEINumber())) {
-      this.deleteDatabase(DB_NAME);
-      TestAdapter mDbHelper = new TestAdapter(this);
-      mDbHelper.createDatabase();
-      mDbHelper.open();
-      mDbHelper.close();
-
-      new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-          .setTitle("Reset Services").setMessage("Data restored.").setPositiveButton("ok", null)
-          .show();
+      
+      Intent intent = new Intent(getApplicationContext(),
+          com.example.servicemanager.ImportDataFromDriveActivity.class);
+      startActivity(intent);
+//      
+//      this.deleteDatabase(DB_NAME);
+//      DataAdapter mDbHelper = new DataAdapter(this, new File(getExternalFolderPath() + "/" + DB_NAME));
+//      mDbHelper.createDatabase();
+//      mDbHelper.open();
+//      mDbHelper.close();
+//
+//      new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
+//          .setTitle("Reset Services").setMessage("Data restored.").setPositiveButton("ok", null)
+//          .show();
     } else {
       promptLicenseError();
     }
@@ -204,6 +208,7 @@ public class MainActivity extends ActionBarActivity {
 
   @Override
   public void onBackPressed() {
+    //TODO make this to be called in each case
     syncDataWithDrive();
   }
 }
