@@ -83,6 +83,8 @@ public class CreateFileInFolderActivity extends SyncWithDrive {
             return;
           }
           showMessage("Created a file: " + result.getDriveFile().getDriveId());
+          setDriveFileId(result.getDriveFile().getDriveId());
+          storeDriveFileIdToDb(result.getDriveFile().getDriveId());
 
           finish();
           moveTaskToBack(true);

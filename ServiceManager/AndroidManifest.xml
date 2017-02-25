@@ -78,6 +78,7 @@
             android:name=".CreateUser"
             android:label="@string/title_activity_create_user" >
         </activity>
+        <activity android:name=".ImportDataFromDriveActivity" />
        <activity android:name=".ExportDataToDriveActivity" />
        <activity android:name=".CreateFolderActivity" />
        <activity android:name=".CreateFileInFolderActivity" />

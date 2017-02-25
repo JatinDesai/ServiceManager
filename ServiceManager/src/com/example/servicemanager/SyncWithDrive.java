@@ -11,9 +11,18 @@ import java.io.OutputStream;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi.MetadataBufferResult;
+import com.google.android.gms.drive.DriveFile;
 import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.DriveResource;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.MetadataBuffer;
+import com.google.android.gms.drive.query.Filters;
+import com.google.android.gms.drive.query.Query;
+import com.google.android.gms.drive.query.SearchableField;
 import com.google.android.gms.common.GoogleApiAvailability;
 
 import android.app.Activity;
@@ -26,21 +35,29 @@ import android.widget.Toast;
 
 public class SyncWithDrive extends Activity
     implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+  
+  protected DBHelper smDevDb = new DBHelper(this);
 
   public static final String TAG = "Google Drive Activity";
   private static final int REQUEST_CODE_RESOLUTION = 1;
-  private static final int REQUEST_CODE_OPENER = 2;
-  public static final String EXISTING_FOLDER_ID = "SMDBFolder";
+  
+  public static final String EXISTING_FOLDER_ID = "DBFolder12345";
+  public static final String EXISTING_FILE_ID = "NewDBfileInFolder";
   // This folder's drive id should be from the database,
   // this is an Unique value for EXISTING_FOLDER_ID
-  public static DriveId driveFolderId =
-      DriveId.decodeFromString("DriveId:CAESABisDCCEq5Gr3lEoAQ==");
+  public static DriveId driveFolderId;
+      //= DriveId.decodeFromString("DriveId:CAESABisDCCEq5Gr3lEoAQ==");
 
-  private GoogleApiClient mGoogleApiClient;
-  private DriveId mFolderDriveId;
-  private boolean fileOperation = false;
-  private boolean folderOperation = false;
-  DBHelper db = new DBHelper(this);
+  //This file's drive id should be from the database,
+  // this is an Unique value for EXISTING_FILE_ID
+  public static DriveId driveFileId;
+       //= DriveId.decodeFromString("DriveId:CAESABisDCCEq5Gr3lEoAQ==");
+
+  protected GoogleApiClient mGoogleApiClient;
+  
+  
+  protected DriveFile driveFile;
+  //DBHelper db = new DBHelper(this);
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -305,19 +322,230 @@ public class SyncWithDrive extends Activity
     driveFolderId = folderId;
   }
 
-  public void storeDriveFolderIdToDb(DriveId folderId) {
-    // TODO this needs to be stored in DB, as a follows
-    // Parameter Name: DRIVE_FOLDER_ID
-    // Parameter Value like : DRIVE_FOLDER_ID = "DriveId:CAESABisDCCEq5Gr3lEoAQ=="
-
-  }
-
   public void showMessage(String message) {
     Toast.makeText(this, message, Toast.LENGTH_LONG).show();
   }
 
   public GoogleApiClient getGoogleApiClient() {
     return mGoogleApiClient;
+  }
+  
+  public void importDataFromDrive() {
+    Intent intent = new Intent(getApplicationContext(),
+        com.example.servicemanager.ImportDataFromDriveActivity.class);
+    startActivity(intent);
+    finish();
+  }
+
+  public boolean checkIfDriveFileExist() {
+    // get driveFolderId stored in database
+    // Parameter Name: DRIVE_FILE_ID
+    // Parameter Value like : DRIVE_FILE_ID = "DriveId:CAESABisDCCEq5Gr3lEoAQ=="
+    boolean driveFileExist = false;
+
+    DriveId driveFId = getDriveFileIdFromDB();
+
+    if (driveFId == null) {
+      checkDriveForFileName(EXISTING_FILE_ID);
+      driveFileExist = true;
+    } else {
+      checkDriveForFileId(driveFId);
+      driveFileExist = true;
+    }
+
+    return driveFileExist;
+  }
+
+  public DriveId getDriveFileIdFromDB(){
+    String driveFileId = smDevDb.getGlobalParam(DRIVE_FILE_ID);
+
+    if (!driveFileId.isEmpty()) {
+      return DriveId.decodeFromString(driveFileId);
+    }
+    return null;
+  }
+
+  public boolean checkDriveForFileId(DriveId fileId){
+    //TODO in complete
+    driveFile = Drive.DriveApi.getFile(mGoogleApiClient, fileId);
+    driveFile.getMetadata(mGoogleApiClient).setResultCallback(metadataRetrievedCallbackFile);
+
+    if (driveFile != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  
+  final private ResultCallback<DriveResource.MetadataResult> metadataRetrievedCallbackFile = new
+      ResultCallback<DriveResource.MetadataResult>() {
+    @Override
+    public void onResult(DriveResource.MetadataResult result) {
+      if (!result.getStatus().isSuccess()) {
+        Log.v(TAG, "Problem while trying to fetch metadata.");
+        return;
+      }
+
+      Metadata metadata = result.getMetadata();
+      DriveId dId  = metadata.getDriveId();
+      if(metadata.isTrashed()){
+        Log.v(TAG, "File is trashed");
+      }else{
+        setDriveFileId(dId);
+        Log.v(TAG, "File is not trashed"); 
+      }
+
+    }
+  };
+  
+  public void checkDriveForFileName(String fileName){
+    //TODO in complete
+    Query query = new Query.Builder().addFilter(Filters.and(
+        Filters.contains(SearchableField.TITLE, fileName),
+        Filters.eq(SearchableField.TRASHED, false))).build();
+
+    Drive.DriveApi.query(getGoogleApiClient(), query).setResultCallback(fileResultCallback);
+  }
+
+  final ResultCallback<MetadataBufferResult> fileResultCallback = new ResultCallback<MetadataBufferResult >() {
+    public void onResult(MetadataBufferResult result) {
+      if (!result.getStatus().isSuccess()) {
+        showMessage("No such file exist");
+        return;
+      }
+
+      if (result.getStatus().isSuccess()) {
+        MetadataBuffer mdb = null;
+        try { 
+          mdb = result.getMetadataBuffer();
+          if (mdb != null) {
+            for (Metadata md : mdb) {
+              if (md == null) continue;
+              // ...
+              
+              
+            }
+          }
+        } finally { if (mdb != null) mdb.close(); 
+        }
+      }
+
+    }
+
+  };
+
+  public boolean checkIfFolderExistOnDrive() {
+    // get driveFolderId stored in database
+    // Parameter Name: DRIVE_FOLDER_ID
+    // Parameter Value like : DRIVE_FOLDER_ID = "DriveId:CAESABisDCCEq5Gr3lEoAQ=="
+    boolean driveFolderExist = false;
+
+    DriveId driveFId = getDriveFolderIdFromDB();
+
+    if (driveFId == null) {
+      // Check drive for Folder Name
+      /*driveFolderExist = */checkDriveForFolderName(EXISTING_FOLDER_ID);
+      if (driveFolderId != null) {
+        driveFolderExist = true;
+      }
+    } else {
+      // Check drive for Folder Id
+      /*driveFolderExist = */checkDriveForFolderId(driveFId);
+      driveFolderExist = true;
+    }
+
+    return driveFolderExist;
+  }
+
+  public DriveId getDriveFolderIdFromDB(){
+    String driveFolderId = smDevDb.getGlobalParam(DRIVE_FOLDER_ID);
+    if (!driveFolderId.isEmpty()) {
+      return DriveId.decodeFromString(driveFolderId);
+    }
+    return null;
+  }
+
+  public void checkDriveForFolderId(DriveId folderId){
+    //TODO in complete
+    DriveFolder folder = Drive.DriveApi.getFolder(mGoogleApiClient, folderId);
+    folder.getMetadata(mGoogleApiClient).setResultCallback(metadataRetrievedCallback);
+  }
+
+
+
+  final private ResultCallback<DriveResource.MetadataResult> metadataRetrievedCallback = new
+      ResultCallback<DriveResource.MetadataResult>() {
+    @Override
+    public void onResult(DriveResource.MetadataResult result) {
+      if (!result.getStatus().isSuccess()) {
+        Log.v(TAG, "Problem while trying to fetch metadata.");
+        return;
+      }
+
+      Metadata metadata = result.getMetadata();
+      DriveId dId  = metadata.getDriveId();
+      if(metadata.isTrashed()){
+        Log.v(TAG, "Folder is trashed");
+      }else{
+        setDriveFolderId(dId);
+        Log.v(TAG, "Folder is not trashed"); 
+      }
+
+    }
+  };
+
+  public void checkDriveForFolderName(String folderName){
+     Query query = new Query.Builder().addFilter(Filters.and(
+        Filters.eq(SearchableField.TITLE, folderName),
+        Filters.eq(SearchableField.TRASHED, false))).build();
+    
+    Drive.DriveApi.query(getGoogleApiClient(), query).setResultCallback(folderResultCallback);
+  }  
+
+  final ResultCallback<MetadataBufferResult> folderResultCallback = new ResultCallback<MetadataBufferResult >() {
+    public void onResult(MetadataBufferResult result) {
+      if (!result.getStatus().isSuccess()) {
+        showMessage("No such folder exist");
+        return;
+      }
+
+      if (result.getStatus().isSuccess()) {
+        MetadataBuffer mdb = null;
+        try { 
+          mdb = result.getMetadataBuffer();
+          if (mdb != null) {
+            for (Metadata md : mdb) {
+              if (md == null) continue;
+              DriveId dId  = md.getDriveId();      // here is the "Drive ID" 
+              // ...
+              
+              setDriveFolderId(dId);
+              // TODO set the drive id of the folder in global params if does not exist
+              // TODO Check for the file's ID 
+            }
+          }
+        } finally { 
+          if (mdb != null) {
+            mdb.close(); 
+          }
+        }
+      }
+
+    }
+
+  };
+
+
+  public void setDriveFileId(DriveId fileId) {
+    driveFileId = fileId;
+  }
+
+  public void storeDriveFolderIdToDb(DriveId folderId) {
+    smDevDb.updateGlobalParam(DRIVE_FOLDER_ID, folderId.toString(), null);
+  }
+
+  public void storeDriveFileIdToDb(DriveId fileId) {
+    smDevDb.updateGlobalParam(DRIVE_FILE_ID, fileId.toString(), null);
   }
   // Pragnesh end
 }

@@ -2,7 +2,7 @@ package com.example.servicemanager;
 
 import static com.example.servicemanager.Constants.*;
 import static com.example.servicemanager.Utils.*;
-import java.io.FileInputStream;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +20,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
   // destination path (location) of our database on device
   private static String DB_PATH = getExternalFolderPath();
   private SQLiteDatabase mDataBase;
+  private InputStream inputStream;
 
-  public DataBaseHelper(Context context) {
+  public DataBaseHelper(Context context, InputStream inputStream) {
     super(context, DB_NAME, null, 1);// 1? Its database Version
     DB_PATH = Utils.getDatabasePath(context.getApplicationInfo().dataDir, context.getPackageName());
+    this.inputStream = inputStream;
   }
 
   public void createDataBase() throws IOException {
@@ -42,17 +44,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
   // Copy the database from assets
   private void copyDataBase() throws IOException {
-    InputStream mInput = new FileInputStream(getExternalFolderPath() + "/" + DB_NAME);
+    //File file = Drive.files().get(fileId).execute();
+    
     String outFileName = DB_PATH + DB_NAME_WITH_EXTENTION;
     OutputStream mOutput = new FileOutputStream(outFileName);
     byte[] mBuffer = new byte[1024];
     int mLength;
-    while ((mLength = mInput.read(mBuffer)) > 0) {
+    while ((mLength = inputStream.read(mBuffer)) > 0) {
       mOutput.write(mBuffer, 0, mLength);
     }
     mOutput.flush();
     mOutput.close();
-    mInput.close();
+    inputStream.close();
   }
 
   // Open the database, so we can query it

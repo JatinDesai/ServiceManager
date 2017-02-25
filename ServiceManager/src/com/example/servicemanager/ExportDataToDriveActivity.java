@@ -7,12 +7,14 @@ public class ExportDataToDriveActivity extends SyncWithDrive {
 
   @Override
   public void onConnected(Bundle connectionHint) {
-    if (checkIfDriveFolderExist()) {
+    if (checkIfFolderExistOnDrive()) {
       createFileInDriveFolder();
     } else {
       createNewFolderOnDrive();
-      // createFileInDriveFolder();
+      createFileInDriveFolder();
     }
+    
+    // Just export file and store the drive file id to database
   }
 
   public void createNewFolderOnDrive() {
