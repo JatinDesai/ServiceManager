@@ -16,14 +16,16 @@ public class Customer implements Parcelable {
   private String sellingDate;
   private String lastServiceDate;
   private String nextServiceDate;
+  private int serviceDuration;
+  private int maxServices;
   private int totalServiceCount;
   private String timeStamp;
   private int isObsolate;
 
   public Customer(int id, String name, String address, String contactNo, String emailId,
       String productName, String productModelNo, int productPrice, String sellingDate,
-      String lastServiceDate, String nextServiceDate, int totalServiceCount, String timeStamp,
-      int isObsolate) {
+      String lastServiceDate, String nextServiceDate, int serviceDuration, int maxServices,
+      int totalServiceCount, String timeStamp, int isObsolate) {
     super();
     this.id = id;
     this.name = name;
@@ -36,6 +38,8 @@ public class Customer implements Parcelable {
     this.sellingDate = sellingDate;
     this.lastServiceDate = lastServiceDate;
     this.nextServiceDate = nextServiceDate;
+    this.serviceDuration = serviceDuration;
+    this.maxServices = maxServices;
     this.totalServiceCount = totalServiceCount;
     this.timeStamp = timeStamp;
     this.isObsolate = isObsolate;
@@ -165,6 +169,22 @@ public class Customer implements Parcelable {
 
   /* everything below here is for implementing Parcelable */
 
+  public int getServiceDuration() {
+    return serviceDuration;
+  }
+
+  public void setServiceDuration(int serviceDuration) {
+    this.serviceDuration = serviceDuration;
+  }
+
+  public int getMaxServices() {
+    return maxServices;
+  }
+
+  public void setMaxServices(int maxServices) {
+    this.maxServices = maxServices;
+  }
+
   // 99.9% of the time you can just ignore this
   public int describeContents() {
     return 0;
@@ -183,6 +203,8 @@ public class Customer implements Parcelable {
     out.writeString(sellingDate);
     out.writeString(lastServiceDate);
     out.writeString(nextServiceDate);
+    out.writeInt(serviceDuration);
+    out.writeInt(maxServices);
     out.writeInt(totalServiceCount);
     out.writeString(timeStamp);
     out.writeInt(isObsolate);
@@ -214,6 +236,8 @@ public class Customer implements Parcelable {
     sellingDate = in.readString();
     lastServiceDate = in.readString();
     nextServiceDate = in.readString();
+    serviceDuration = in.readInt();
+    maxServices = in.readInt();
     totalServiceCount = in.readInt();
     timeStamp = in.readString();
     isObsolate = in.readInt();

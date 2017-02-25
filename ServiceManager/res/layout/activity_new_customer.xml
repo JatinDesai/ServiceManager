@@ -177,13 +177,55 @@
       android:ems="10"
       android:textSize="20sp" />
 
+    <TextView
+      android:id="@+id/labelServiceDuration"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@+id/editTextServiceDuration"
+      android:layout_alignParentLeft="true"
+      android:layout_gravity="center"
+      android:drawableLeft="@drawable/service_duration"
+      android:singleLine="true" />
+
+    <EditText
+      android:id="@+id/editTextServiceDuration"
+      android:hint="@string/serviceDuration"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/editTextSellingDate"
+      android:layout_below="@+id/editTextSellingDate"
+      android:layout_marginTop="10dp"
+      android:ems="10"
+      android:textSize="20sp" />
+    
+    <TextView
+      android:id="@+id/labelMaxServices"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignBottom="@+id/editTextMaxServices"
+      android:layout_alignParentLeft="true"
+      android:layout_gravity="center"
+      android:drawableLeft="@drawable/max_services"
+      android:singleLine="true" />
+
+    <EditText
+      android:id="@+id/editTextMaxServices"
+      android:hint="@string/maxServices"
+      android:layout_width="fill_parent"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/editTextServiceDuration"
+      android:layout_below="@+id/editTextServiceDuration"
+      android:layout_marginTop="10dp"
+      android:ems="10"
+      android:textSize="20sp" />
+    
     <Button
       android:id="@+id/btnSave"
       android:text="@string/save"
       android:layout_width="fill_parent"
       android:layout_height="fill_parent"
       android:background="@drawable/button"
-      android:layout_below="@+id/editTextSellingDate"
+      android:layout_below="@+id/editTextMaxServices"
       android:layout_marginTop="20dp"
       android:textSize="@dimen/btn_font_size"
       android:textColor="@color/white"
