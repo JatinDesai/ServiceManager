@@ -3,6 +3,8 @@ package com.example.servicemanager;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.drive.Drive;
 import com.google.android.gms.drive.MetadataChangeSet;
+
+import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.gms.drive.DriveFolder.DriveFolderResult;
 import com.google.android.gms.drive.DriveId;
@@ -38,6 +40,11 @@ public class CreateFolderActivity extends SyncWithDrive {
 
           setDriveFolderId(folderId);
           storeDriveFolderIdToDb(folderId);
+          
+          //create file after folder creation
+          Intent intent2 = new Intent(getApplicationContext(),
+              com.example.servicemanager.CreateFileInFolderActivity.class);
+          startActivity(intent2);
         }
       };
 }

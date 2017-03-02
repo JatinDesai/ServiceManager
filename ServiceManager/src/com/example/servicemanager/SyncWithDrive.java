@@ -40,9 +40,8 @@ public class SyncWithDrive extends Activity
 
   public static final String TAG = "Google Drive Activity";
   private static final int REQUEST_CODE_RESOLUTION = 1;
+  public static final String EXISTING_FOLDER_ID = "SMDBFolder";
   
-  public static final String EXISTING_FOLDER_ID = "DBFolder12345";
-  public static final String EXISTING_FILE_ID = "NewDBfileInFolder";
   // This folder's drive id should be from the database,
   // this is an Unique value for EXISTING_FOLDER_ID
   public static DriveId driveFolderId;
@@ -346,8 +345,11 @@ public class SyncWithDrive extends Activity
     DriveId driveFId = getDriveFileIdFromDB();
 
     if (driveFId == null) {
-      checkDriveForFileName(EXISTING_FILE_ID);
-      driveFileExist = true;
+      checkDriveForFileName(DB_NAME_WITH_EXTENTION);
+      if(driveFileId != null) {
+        driveFileExist = true;
+      }
+      
     } else {
       checkDriveForFileId(driveFId);
       driveFileExist = true;
@@ -421,9 +423,9 @@ public class SyncWithDrive extends Activity
           if (mdb != null) {
             for (Metadata md : mdb) {
               if (md == null) continue;
-              // ...
-              
-              
+              DriveId dId  = md.getDriveId();
+              String filaname  = md.getTitle();
+              setDriveFileId(dId);              
             }
           }
         } finally { if (mdb != null) mdb.close(); 

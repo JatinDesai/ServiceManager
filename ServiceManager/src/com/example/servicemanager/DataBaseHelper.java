@@ -3,6 +3,7 @@ package com.example.servicemanager;
 import static com.example.servicemanager.Constants.*;
 import static com.example.servicemanager.Utils.*;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +19,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
   private static String TAG = "DataBaseHelper"; // Tag just for the LogCat
                                                 // window
   // destination path (location) of our database on device
-  private static String DB_PATH = getExternalFolderPath();
+  protected static String DB_PATH = getExternalFolderPath();
   private SQLiteDatabase mDataBase;
   private InputStream inputStream;
 
@@ -45,17 +46,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
   // Copy the database from assets
   private void copyDataBase() throws IOException {
     //File file = Drive.files().get(fileId).execute();
-    
+    InputStream mInput = new FileInputStream(getExternalFolderPath() + "/" + DB_NAME);
     String outFileName = DB_PATH + DB_NAME_WITH_EXTENTION;
     OutputStream mOutput = new FileOutputStream(outFileName);
     byte[] mBuffer = new byte[1024];
     int mLength;
-    while ((mLength = inputStream.read(mBuffer)) > 0) {
+    while ((mLength = mInput.read(mBuffer)) > 0) {
       mOutput.write(mBuffer, 0, mLength);
     }
     mOutput.flush();
     mOutput.close();
-    inputStream.close();
+    mInput.close();
   }
 
   // Open the database, so we can query it

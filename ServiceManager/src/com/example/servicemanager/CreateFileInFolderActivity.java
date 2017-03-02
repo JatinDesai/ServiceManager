@@ -12,7 +12,7 @@ import com.google.android.gms.drive.DriveFolder.DriveFileResult;
 import com.google.android.gms.drive.MetadataChangeSet;
 
 import static com.example.servicemanager.Constants.DB_NAME;
-import static com.example.servicemanager.Constants.FILE_NAME;
+import static com.example.servicemanager.Constants.DB_NAME_WITH_EXTENTION;
 import static com.example.servicemanager.Utils.getDateString;
 import static com.example.servicemanager.Utils.getExternalFolderPath;
 
@@ -65,7 +65,7 @@ public class CreateFileInFolderActivity extends SyncWithDrive {
     IOUtils.copy(mInput, outputStream);
 
     MetadataChangeSet changeSet =
-        new MetadataChangeSet.Builder().setTitle(FILE_NAME + getDateString(Calendar.getInstance()))
+        new MetadataChangeSet.Builder().setTitle(DB_NAME_WITH_EXTENTION)
             .setMimeType("text/plain").setStarred(true).build();
 
     DriveFolder driveFolder = Drive.DriveApi.getFolder(getGoogleApiClient(), driveFolderId);
