@@ -57,9 +57,9 @@
     <string-array name="image_ids">
         <item>@drawable/add_customer</item>
         <item>@drawable/search_customer</item>
-        <item>@drawable/due_services</item>
-        <item>@drawable/import_data</item>
+        <item>@drawable/due_services</item>        
         <item>@drawable/upcoming_services</item>
+        <item>@drawable/import_data</item>
         <item>@drawable/settings</item>
     </string-array>
 

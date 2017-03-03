@@ -104,9 +104,9 @@ public class MainActivity extends ActionBarActivity {
       else if (i == 2)
         imageItems.add(new ImageItem(bitmap, DUE_SERVICES));
       else if (i == 3)
-        imageItems.add(new ImageItem(bitmap, IMPORT));
-      else if (i == 4)
         imageItems.add(new ImageItem(bitmap, UPCOMING_SERVICES));
+      else if (i == 4)
+        imageItems.add(new ImageItem(bitmap, IMPORT));
       else if (i == 5)
         imageItems.add(new ImageItem(bitmap, SETTINGS));
     }

@@ -59,8 +59,8 @@ public class AlarmService extends IntentService {
       Resources res = this.getResources();
       NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
-      builder.setContentIntent(pendingIntent).setSmallIcon(R.drawable.ic_launcher)
-          .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_launcher))
+      builder.setContentIntent(pendingIntent).setSmallIcon(R.drawable.sm_icon)
+          .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.sm_icon))
           .setTicker(res.getString(R.string.due_services)).setAutoCancel(true)
           .setContentTitle(res.getString(R.string.due_services))
           .setContentText(res.getString(R.string.due_services));
